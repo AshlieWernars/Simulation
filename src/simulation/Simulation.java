@@ -44,12 +44,16 @@ public class Simulation extends Thread {
 
 	@Override
 	public void run() {
-		isRunning = true;
-		while (isRunning) {
+		while (true) {
+			if (!isRunning) {
+				continue;
+			}
+
 			simulateGeneration();
 
 			if (generation == 1000) {
-				throw new RuntimeException();
+				isRunning = false;
+				break;
 			}
 		}
 	}

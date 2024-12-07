@@ -131,7 +131,6 @@ public class SimulationDisplay {
 	public static void main(String[] args) {
 		// Assuming you have a Simulation object to pass in
 		Simulation simulation = new Simulation();
-		
 		new SimulationDisplay(simulation);
 		
 	}
