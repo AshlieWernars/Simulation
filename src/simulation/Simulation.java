@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 
 import entities.Human;
 
@@ -28,32 +29,30 @@ public class Simulation extends Thread {
 	public Simulation() {
 		this.population = new ArrayList<>();
 		this.generation = 0;
-		// Initialize the population with humans (example: 100 humans)
 		for (int i = 0; i < 100; i++) {
 			population.add(new Human());
 		}
-
-		run();
 	}
 
 	public void startSimulation() {
 		if (!isRunning) {
 			isRunning = true;
+			start(); // This starts the thread and calls run()
 		}
 	}
 
 	@Override
 	public void run() {
-		while (true) {
-			if (!isRunning) {
-				continue;
-			}
-
+		while (isRunning) {
 			simulateGeneration();
+			try {
+				Thread.sleep(1000); // Sleep for 1 second before simulating the next generation
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 
 			if (generation == 1000) {
 				isRunning = false;
-				break;
 			}
 		}
 	}
@@ -77,7 +76,6 @@ public class Simulation extends Thread {
 	}
 
 	public void simulateGeneration() {
-		// Simulate a generation step (interaction, reproduction, mutation)
 		generation++;
 		aggressiveCount = 0;
 		cooperativeCount = 0;
@@ -90,9 +88,7 @@ public class Simulation extends Thread {
 		totalNeuroticism = 0;
 		totalOpenness = 0;
 
-		// Example of how humans interact
 		for (Human human : population) {
-			// Track behaviors and traits
 			if (human.getBehavior().equals("Aggressive")) {
 				aggressiveCount++;
 			} else if (human.getBehavior().equals("Cooperative")) {
@@ -113,7 +109,6 @@ public class Simulation extends Thread {
 	}
 
 	public void updateStats() {
-		// Fetch and display simulation data (average values, current generation, etc.)
 		stats = "Generation: " + getGeneration() + "\n";
 		stats += "Aggressive: " + getAggressiveCount() + "\n";
 		stats += "Cooperative: " + getCooperativeCount() + "\n";
@@ -126,7 +121,16 @@ public class Simulation extends Thread {
 		stats += "Average Neuroticism: " + getAverageNeuroticism() + "\n";
 		stats += "Average Openness: " + getAverageOpenness() + "\n";
 
-		// statsArea.setText(stats);
+		if (statsArea != null) {
+			// Safely update the statsArea in the event dispatch thread
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					statsArea.setText(stats);
+				}
+			});
+		}
+
 		System.out.println(stats);
 	}
 
@@ -134,7 +138,6 @@ public class Simulation extends Thread {
 		return stats;
 	}
 
-	// Getter methods for statistics
 	public int getGeneration() {
 		return generation;
 	}
