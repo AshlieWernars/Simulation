@@ -15,9 +15,18 @@ public class Simulation extends Thread {
 	private List<Human> population;
 	private final int populationLimit = 200; // Set the population limit to 200
 	private int generation;
+
 	private int aggressiveCount;
 	private int cooperativeCount;
 	private int neutralCount;
+	private int curiousCount = 0;
+	private int defensiveCount = 0;
+	private int friendlyCount = 0;
+	private int greedyCount = 0;
+	private int lazyCount = 0;
+	private int honestCount = 0;
+	private int deceptiveCount = 0;
+
 	private double totalHealth;
 	private double totalSocialSkill;
 	private double totalPhysicalStrength;
@@ -25,6 +34,18 @@ public class Simulation extends Thread {
 	private double totalExtroversion;
 	private double totalNeuroticism;
 	private double totalOpenness;
+
+	private double totalIntelligence;
+	private double totalAttractiveness;
+	private double totalEmpathy;
+	private double totalCreativity;
+	private double totalMotivation;
+	private double totalHealthRiskTolerance;
+	private double totalConscientiousness;
+	private double totalStressResilience;
+	private double totalParentalInstinct;
+	private double totalSocialDominance;
+
 	private boolean isRunning;
 	private boolean hasStarted;
 	private String stats;
@@ -87,6 +108,14 @@ public class Simulation extends Thread {
 		this.aggressiveCount = 0;
 		this.cooperativeCount = 0;
 		this.neutralCount = 0;
+		this.curiousCount = 0;
+		this.defensiveCount = 0;
+		this.friendlyCount = 0;
+		this.greedyCount = 0;
+		this.lazyCount = 0;
+		this.honestCount = 0;
+		this.deceptiveCount = 0;
+
 		this.totalHealth = 0;
 		this.totalSocialSkill = 0;
 		this.totalPhysicalStrength = 0;
@@ -94,6 +123,17 @@ public class Simulation extends Thread {
 		this.totalExtroversion = 0;
 		this.totalNeuroticism = 0;
 		this.totalOpenness = 0;
+		this.totalIntelligence = 0;
+		this.totalAttractiveness = 0;
+		this.totalEmpathy = 0;
+		this.totalCreativity = 0;
+		this.totalMotivation = 0;
+		this.totalHealthRiskTolerance = 0;
+		this.totalConscientiousness = 0;
+		this.totalStressResilience = 0;
+		this.totalParentalInstinct = 0;
+		this.totalSocialDominance = 0;
+
 		this.population.clear();
 		for (int i = 0; i < 100; i++) {
 			population.add(new Human());
@@ -102,16 +142,34 @@ public class Simulation extends Thread {
 
 	public void simulateGeneration() {
 		generation++;
-		aggressiveCount = 0;
-		cooperativeCount = 0;
-		neutralCount = 0;
-		totalHealth = 0;
-		totalSocialSkill = 0;
-		totalPhysicalStrength = 0;
-		totalMentalHealth = 0;
-		totalExtroversion = 0;
-		totalNeuroticism = 0;
-		totalOpenness = 0;
+		this.aggressiveCount = 0;
+		this.cooperativeCount = 0;
+		this.neutralCount = 0;
+		this.curiousCount = 0;
+		this.defensiveCount = 0;
+		this.friendlyCount = 0;
+		this.greedyCount = 0;
+		this.lazyCount = 0;
+		this.honestCount = 0;
+		this.deceptiveCount = 0;
+
+		this.totalHealth = 0;
+		this.totalSocialSkill = 0;
+		this.totalPhysicalStrength = 0;
+		this.totalMentalHealth = 0;
+		this.totalExtroversion = 0;
+		this.totalNeuroticism = 0;
+		this.totalOpenness = 0;
+		this.totalIntelligence = 0;
+		this.totalAttractiveness = 0;
+		this.totalEmpathy = 0;
+		this.totalCreativity = 0;
+		this.totalMotivation = 0;
+		this.totalHealthRiskTolerance = 0;
+		this.totalConscientiousness = 0;
+		this.totalStressResilience = 0;
+		this.totalParentalInstinct = 0;
+		this.totalSocialDominance = 0;
 
 		// Humans interact with each other
 		for (int i = 0; i < population.size(); i++) {
@@ -145,13 +203,42 @@ public class Simulation extends Thread {
 		reproduce();
 
 		for (Human human : population) {
-			if (human.getBehavior().equals("Aggressive")) {
+			switch (human.getBehavior()) {
+			case AGGRESSIVE:
 				aggressiveCount++;
-			} else if (human.getBehavior().equals("Cooperative")) {
+				break;
+			case COOPERATIVE:
 				cooperativeCount++;
-			} else {
+				break;
+			case NEUTRAL:
 				neutralCount++;
+				break;
+			case CURIOUS:
+				curiousCount++;
+				break;
+			case DEFENSIVE:
+				defensiveCount++;
+				break;
+			case FRIENDLY:
+				friendlyCount++;
+				break;
+			case GREEDY:
+				greedyCount++;
+				break;
+			case LAZY:
+				lazyCount++;
+				break;
+			case HONEST:
+				honestCount++;
+				break;
+			case DECEPTIVE:
+				deceptiveCount++;
+				break;
+			default:
+				// This shouldn't happen if behavior is always one of the defined enums
+				throw new IllegalArgumentException("Unknown behavior: " + human.getBehavior());
 			}
+
 			totalHealth += human.getHealth();
 			totalSocialSkill += human.getSocialSkill();
 			totalPhysicalStrength += human.getPhysicalStrength();
@@ -159,6 +246,18 @@ public class Simulation extends Thread {
 			totalExtroversion += human.getExtroversion();
 			totalNeuroticism += human.getNeuroticism();
 			totalOpenness += human.getOpenness();
+
+			// Adding new traits to accumulate totals
+			totalIntelligence += human.getIntelligence();
+			totalAttractiveness += human.getAttractiveness();
+			totalEmpathy += human.getEmpathy();
+			totalCreativity += human.getCreativity();
+			totalMotivation += human.getMotivation();
+			totalHealthRiskTolerance += human.getHealthRiskTolerance();
+			totalConscientiousness += human.getConscientiousness();
+			totalStressResilience += human.getStressResilience();
+			totalParentalInstinct += human.getParentalInstinct();
+			totalSocialDominance += human.getSocialDominance();
 		}
 
 		updateStats();
@@ -211,10 +310,19 @@ public class Simulation extends Thread {
 	}
 
 	public void updateStats() {
-		stats = "Generation: " + getGeneration() + "\n";
-		stats += "Aggressive: " + getAggressiveCount() + "\n";
-		stats += "Cooperative: " + getCooperativeCount() + "\n";
-		stats += "Neutral: " + getNeutralCount() + "\n";
+		stats = "Generation: " + generation + "\n";
+
+		stats += "Aggressive: " + aggressiveCount + "\n";
+		stats += "Cooperative: " + cooperativeCount + "\n";
+		stats += "Neutral: " + neutralCount + "\n";
+		stats += "Curious: " + curiousCount + "\n";
+		stats += "Defensive: " + defensiveCount + "\n";
+		stats += "Friendly: " + friendlyCount + "\n";
+		stats += "Greedy: " + greedyCount + "\n";
+		stats += "Lazy: " + lazyCount + "\n";
+		stats += "Honest: " + honestCount + "\n";
+		stats += "Deceptive: " + deceptiveCount + "\n";
+
 		stats += "Average Health: " + getAverageHealth() + "\n";
 		stats += "Average Social Skill: " + getAverageSocialSkill() + "\n";
 		stats += "Average Physical Strength: " + getAveragePhysicalStrength() + "\n";
@@ -222,6 +330,18 @@ public class Simulation extends Thread {
 		stats += "Average Extroversion: " + getAverageExtroversion() + "\n";
 		stats += "Average Neuroticism: " + getAverageNeuroticism() + "\n";
 		stats += "Average Openness: " + getAverageOpenness() + "\n";
+
+		// Adding new traits to stats
+		stats += "Average Intelligence: " + getAverageIntelligence() + "\n";
+		stats += "Average Attractiveness: " + getAverageAttractiveness() + "\n";
+		stats += "Average Empathy: " + getAverageEmpathy() + "\n";
+		stats += "Average Creativity: " + getAverageCreativity() + "\n";
+		stats += "Average Motivation: " + getAverageMotivation() + "\n";
+		stats += "Average Health Risk Tolerance: " + getAverageHealthRiskTolerance() + "\n";
+		stats += "Average Conscientiousness: " + getAverageConscientiousness() + "\n";
+		stats += "Average Stress Resilience: " + getAverageStressResilience() + "\n";
+		stats += "Average Parental Instinct: " + getAverageParentalInstinct() + "\n";
+		stats += "Average Social Dominance: " + getAverageSocialDominance() + "\n";
 
 		if (statsArea != null) {
 			// Safely update the statsArea in the event dispatch thread
@@ -277,6 +397,46 @@ public class Simulation extends Thread {
 
 	public double getAverageOpenness() {
 		return totalOpenness / population.size();
+	}
+
+	public double getAverageIntelligence() {
+		return totalIntelligence / population.size();
+	}
+
+	public double getAverageAttractiveness() {
+		return totalAttractiveness / population.size();
+	}
+
+	public double getAverageEmpathy() {
+		return totalEmpathy / population.size();
+	}
+
+	public double getAverageCreativity() {
+		return totalCreativity / population.size();
+	}
+
+	public double getAverageMotivation() {
+		return totalMotivation / population.size();
+	}
+
+	public double getAverageHealthRiskTolerance() {
+		return totalHealthRiskTolerance / population.size();
+	}
+
+	public double getAverageConscientiousness() {
+		return totalConscientiousness / population.size();
+	}
+
+	public double getAverageStressResilience() {
+		return totalStressResilience / population.size();
+	}
+
+	public double getAverageParentalInstinct() {
+		return totalParentalInstinct / population.size();
+	}
+
+	public double getAverageSocialDominance() {
+		return totalSocialDominance / population.size();
 	}
 
 	public void setStatsArea(JTextArea statsArea) {
