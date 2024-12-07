@@ -74,7 +74,7 @@ public class Simulation extends Thread {
 			simulateGeneration();
 
 			try {
-				Thread.sleep(1); // Sleep for 1 second between generations
+				Thread.sleep(1000); // Sleep for 1 second between generations
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				break;

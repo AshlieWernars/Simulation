@@ -160,23 +160,23 @@ public class Human {
 		Human child = new Human();
 
 		// Inherit traits (mix of parent traits)
-		child.setExtroversion((parent1.getExtroversion() + parent2.getExtroversion()) / 2);
+		child.setExtroversion(mixTraits(parent1.getExtroversion(), parent2.getExtroversion()));
 		child.setExtroversion(applyMutation(child.getExtroversion())); // Apply mutation to extroversion
 
-		child.setNeuroticism((parent1.getNeuroticism() + parent2.getNeuroticism()) / 2);
+		child.setNeuroticism(mixTraits(parent1.getNeuroticism(), parent2.getNeuroticism()));
 		child.setNeuroticism(applyMutation(child.getNeuroticism())); // Apply mutation to neuroticism
 
-		child.setOpenness((parent1.getOpenness() + parent2.getOpenness()) / 2);
+		child.setOpenness(mixTraits(parent1.getOpenness(), parent2.getOpenness()));
 		child.setOpenness(applyMutation(child.getOpenness())); // Apply mutation to openness
 
 		// Inherit social skills and health and apply mutation
-		child.setSocialSkill((parent1.getSocialSkill() + parent2.getSocialSkill()) / 2);
+		child.setSocialSkill(mixTraits(parent1.getSocialSkill(), parent2.getSocialSkill()));
 		child.setSocialSkill(applyMutation(child.getSocialSkill())); // Apply mutation to social skill
 
-		child.setHealth((parent1.getHealth() + parent2.getHealth()) / 2);
+		child.setHealth(mixTraits(parent1.getHealth(), parent2.getHealth()));
 		child.setHealth(applyMutation(child.getHealth())); // Apply mutation to health
 
-		child.setMentalHealth((parent1.getMentalHealth() + parent2.getMentalHealth()) / 2);
+		child.setMentalHealth(mixTraits(parent1.getMentalHealth(), parent2.getMentalHealth()));
 		child.setMentalHealth(applyMutation(child.getMentalHealth())); // Apply mutation to mental health
 
 		child.updateBehaviorBasedOnTraits();
@@ -194,5 +194,14 @@ public class Human {
 		}
 		// Ensure the trait stays within the valid range (0-10)
 		return Math.max(0, Math.min(10, traitValue));
+	}
+
+	// New method to mix traits more dynamically (random bias towards one parent)
+	private static int mixTraits(int trait1, int trait2) {
+		Random rand = new Random();
+		if (rand.nextDouble() < 0.5) {
+			return trait1; // Bias towards first parent
+		}
+		return trait2; // Bias towards second parent
 	}
 }
