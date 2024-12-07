@@ -1,14 +1,16 @@
 package entities;
 
-import genetics.Gene;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import behavior.Behavior;
+import genetics.Gene;
+
 public class Human {
 
 	private List<Gene> genes;
-	private String behavior; // Aggressive, Cooperative, Neutral
+	private Behavior behavior; // Aggressive, Cooperative, Neutral
 
 	private int age; // Age of the human
 
@@ -34,7 +36,7 @@ public class Human {
 		this.openness = Math.max(new Random().nextInt(11), 5); // Ensure openness is at least 5
 
 		// Random behavior
-		this.behavior = new Random().nextBoolean() ? "Aggressive" : "Cooperative";
+		this.behavior = Behavior.randomBehavior();
 
 		// Add random genes
 		for (int i = 0; i < 10; i++) { // Assuming 10 genes per human
@@ -114,11 +116,11 @@ public class Human {
 		this.openness = Math.max(0, Math.min(10, openness)); // Clamps openness between 0 and 10
 	}
 
-	public void setBehavior(String behavior) {
+	public void setBehavior(Behavior behavior) {
 		this.behavior = behavior;
 	}
 
-	public String getBehavior() {
+	public Behavior getBehavior() {
 		return behavior;
 	}
 
@@ -133,22 +135,22 @@ public class Human {
 	public void updateBehaviorBasedOnTraits() {
 		// Modify behavior based on traits
 		if (this.extroversion > 7 && this.socialSkill > 6) {
-			this.behavior = "Cooperative"; // Highly social and skilled humans tend to cooperate
+			this.behavior = Behavior.COOPERATIVE; // Highly social and skilled humans tend to cooperate
 		} else if (this.neuroticism > 6 || this.mentalHealth < 3) {
-			this.behavior = "Aggressive"; // High neuroticism or poor mental health might lead to aggression
+			this.behavior = Behavior.AGGRESSIVE; // High neuroticism or poor mental health might lead to aggression
 		} else {
-			this.behavior = "Neutral"; // If the traits are more balanced, the behavior is neutral
+			this.behavior = Behavior.NEUTRAL; // If the traits are more balanced, the behavior is neutral
 		}
 	}
 
 	// Method to interact with another human
 	public void interact(Human other) {
 		// Example of how interactions might affect mental health
-		if (this.behavior.equals("Aggressive") && other.getBehavior().equals("Cooperative") || this.behavior.equals("Cooperative") && other.getBehavior().equals("Aggressive")) {
+		if (this.behavior.equals(Behavior.AGGRESSIVE) && other.getBehavior().equals(Behavior.COOPERATIVE) || this.behavior.equals(Behavior.COOPERATIVE) && other.getBehavior().equals(Behavior.AGGRESSIVE)) {
 			this.mentalHealth -= 1; // Decrease mental health by 1 for aggressive behavior
-		} else if (this.behavior.equals("Aggressive") && other.getBehavior().equals("Aggressive")) {
-			this.mentalHealth -= 2; // Negative impact if you're cooperative with an aggressive person
-		} else if (this.behavior.equals("Cooperative") && other.getBehavior().equals("Cooperative")) {
+		} else if (this.behavior.equals(Behavior.AGGRESSIVE) && other.getBehavior().equals(Behavior.AGGRESSIVE)) {
+			this.mentalHealth -= 1; // Negative impact if you're cooperative with an aggressive person
+		} else if (this.behavior.equals(Behavior.COOPERATIVE) && other.getBehavior().equals(Behavior.COOPERATIVE)) {
 			this.mentalHealth += 2;
 		}
 
