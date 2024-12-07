@@ -100,8 +100,6 @@ public class SimulationDisplay {
 		});
 
 		frame.setVisible(true);
-		
-		simulation.start();
 	}
 
 	private void startSimulation() {
@@ -132,6 +130,6 @@ public class SimulationDisplay {
 		// Assuming you have a Simulation object to pass in
 		Simulation simulation = new Simulation();
 		new SimulationDisplay(simulation);
-		
+
 	}
 }
