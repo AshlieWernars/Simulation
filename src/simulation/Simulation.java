@@ -3,9 +3,11 @@ package simulation;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JTextArea;
+
 import entities.Human;
 
-public class Simulation {
+public class Simulation extends Thread {
 
 	private List<Human> population;
 	private int generation;
@@ -20,22 +22,35 @@ public class Simulation {
 	private double totalNeuroticism;
 	private double totalOpenness;
 	private boolean isRunning;
+	private String stats;
+	private JTextArea statsArea;
 
 	public Simulation() {
 		this.population = new ArrayList<>();
 		this.generation = 0;
-		this.isRunning = false;
 		// Initialize the population with humans (example: 100 humans)
 		for (int i = 0; i < 100; i++) {
 			population.add(new Human());
 		}
+
+		run();
 	}
 
-	public void start() {
+	public void startSimulation() {
 		if (!isRunning) {
 			isRunning = true;
-			// You can simulate starting here (e.g., running generations, interactions)
-			// Example: simulateGeneration();
+		}
+	}
+
+	@Override
+	public void run() {
+		isRunning = true;
+		while (isRunning) {
+			simulateGeneration();
+
+			if (generation == 1000) {
+				throw new RuntimeException();
+			}
 		}
 	}
 
@@ -89,6 +104,30 @@ public class Simulation {
 			totalNeuroticism += human.getNeuroticism();
 			totalOpenness += human.getOpenness();
 		}
+
+		updateStats();
+	}
+
+	public void updateStats() {
+		// Fetch and display simulation data (average values, current generation, etc.)
+		stats = "Generation: " + getGeneration() + "\n";
+		stats += "Aggressive: " + getAggressiveCount() + "\n";
+		stats += "Cooperative: " + getCooperativeCount() + "\n";
+		stats += "Neutral: " + getNeutralCount() + "\n";
+		stats += "Average Health: " + getAverageHealth() + "\n";
+		stats += "Average Social Skill: " + getAverageSocialSkill() + "\n";
+		stats += "Average Physical Strength: " + getAveragePhysicalStrength() + "\n";
+		stats += "Average Mental Health: " + getAverageMentalHealth() + "\n";
+		stats += "Average Extroversion: " + getAverageExtroversion() + "\n";
+		stats += "Average Neuroticism: " + getAverageNeuroticism() + "\n";
+		stats += "Average Openness: " + getAverageOpenness() + "\n";
+
+		// statsArea.setText(stats);
+		System.out.println(stats);
+	}
+
+	public String getStats() {
+		return stats;
 	}
 
 	// Getter methods for statistics
@@ -136,10 +175,7 @@ public class Simulation {
 		return totalOpenness / population.size();
 	}
 
-	// Method to simulate human reproduction and behavior (this can be expanded
-	// further)
-	public void simulate() {
-		// Simulate interactions and reproduction here
-		simulateGeneration();
+	public void setStatsArea(JTextArea statsArea) {
+		this.statsArea = statsArea;
 	}
 }

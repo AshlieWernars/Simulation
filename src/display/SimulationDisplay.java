@@ -1,13 +1,14 @@
 package display;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.Timer;
 import javax.swing.WindowConstants;
@@ -20,6 +21,7 @@ public class SimulationDisplay {
 	private JButton startButton;
 	private JButton pauseButton;
 	private JButton stopButton;
+	private JButton resetButton;
 	private JTextArea statsArea;
 	private Simulation simulation;
 	private Timer simulationTimer;
@@ -28,23 +30,39 @@ public class SimulationDisplay {
 		this.simulation = simulation;
 		frame = new JFrame("Simulation Control");
 
+		// Create buttons
 		startButton = new JButton("Start");
 		pauseButton = new JButton("Pause");
 		stopButton = new JButton("Stop");
+		resetButton = new JButton("Reset");
+
+		// Set preferred size for buttons
+		startButton.setPreferredSize(new Dimension(100, 40));
+		pauseButton.setPreferredSize(new Dimension(100, 40));
+		stopButton.setPreferredSize(new Dimension(100, 40));
+		resetButton.setPreferredSize(new Dimension(100, 40));
+
+		// Create panel and add buttons
+		JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2x2 grid layout
+		buttonPanel.add(startButton);
+		buttonPanel.add(pauseButton);
+		buttonPanel.add(stopButton);
+		buttonPanel.add(resetButton);
+
+		// Add panel to the frame
+		frame.add(buttonPanel, BorderLayout.CENTER);
+
+		startButton.setPreferredSize(new Dimension(100, 40));
+		pauseButton.setPreferredSize(new Dimension(100, 40));
+		stopButton.setPreferredSize(new Dimension(100, 40));
+		resetButton.setPreferredSize(new Dimension(100, 40));
 
 		statsArea = new JTextArea(10, 30);
 		statsArea.setEditable(false);
 		statsArea.setText("Simulation Stats will appear here.");
 
-		// Layout setup
-		JPanel panel = new JPanel();
-		panel.setLayout(new BorderLayout());
-		panel.add(startButton, BorderLayout.NORTH);
-		panel.add(pauseButton, BorderLayout.CENTER);
-		panel.add(stopButton, BorderLayout.SOUTH);
-		panel.add(new JScrollPane(statsArea), BorderLayout.EAST);
+		simulation.setStatsArea(statsArea);
 
-		frame.getContentPane().add(panel);
 		frame.setSize(500, 300);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,6 +70,7 @@ public class SimulationDisplay {
 		startButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Start");
 				startSimulation();
 			}
 		});
@@ -59,6 +78,7 @@ public class SimulationDisplay {
 		pauseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Pause");
 				pauseSimulation();
 			}
 		});
@@ -66,22 +86,26 @@ public class SimulationDisplay {
 		stopButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("Stop");
 				stopSimulation();
 			}
 		});
 
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Reset");
+				resetSimulation();
+			}
+		});
+
 		frame.setVisible(true);
+		
+		simulation.start();
 	}
 
 	private void startSimulation() {
-		simulation.start(); // Assuming there's a start method in Simulation class
-		simulationTimer = new Timer(1000, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				updateStats();
-			}
-		});
-		simulationTimer.start();
+		simulation.startSimulation();
 	}
 
 	private void pauseSimulation() {
@@ -94,31 +118,21 @@ public class SimulationDisplay {
 		if (simulationTimer != null) {
 			simulationTimer.stop();
 		}
-		simulation.reset(); // Assuming there's a reset method in Simulation class
-		updateStats();
+		simulation.reset();
+		simulation.updateStats();
 	}
 
-	private void updateStats() {
-		// Fetch and display simulation data (average values, current generation, etc.)
-		String stats = "Generation: " + simulation.getGeneration() + "\n";
-		stats += "Aggressive: " + simulation.getAggressiveCount() + "\n";
-		stats += "Cooperative: " + simulation.getCooperativeCount() + "\n";
-		stats += "Neutral: " + simulation.getNeutralCount() + "\n";
-		stats += "Average Health: " + simulation.getAverageHealth() + "\n";
-		stats += "Average Social Skill: " + simulation.getAverageSocialSkill() + "\n";
-		stats += "Average Physical Strength: " + simulation.getAveragePhysicalStrength() + "\n";
-		stats += "Average Mental Health: " + simulation.getAverageMentalHealth() + "\n";
-		stats += "Average Extroversion: " + simulation.getAverageExtroversion() + "\n";
-		stats += "Average Neuroticism: " + simulation.getAverageNeuroticism() + "\n";
-		stats += "Average Openness: " + simulation.getAverageOpenness() + "\n";
-
-		statsArea.setText(stats);
+	private void resetSimulation() {
+		simulation.reset(); // Reset the simulation state
+		simulation.updateStats(); // Update stats after reset
 	}
 
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// Assuming you have a Simulation object to pass in
 		Simulation simulation = new Simulation();
+		
 		new SimulationDisplay(simulation);
+		
 	}
 }
