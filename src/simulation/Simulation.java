@@ -23,6 +23,7 @@ public class Simulation extends Thread {
 	private double totalNeuroticism;
 	private double totalOpenness;
 	private boolean isRunning;
+	private boolean hasStarted;
 	private String stats;
 	private JTextArea statsArea;
 
@@ -32,29 +33,55 @@ public class Simulation extends Thread {
 		for (int i = 0; i < 100; i++) {
 			population.add(new Human());
 		}
+
+		this.isRunning = false;
+		this.hasStarted = false;
 	}
 
-	public void startSimulation() {
-		if (!isRunning) {
+	public synchronized void startSimulation() {
+		if (!hasStarted) {
+			hasStarted = true;
 			isRunning = true;
-			start(); // This starts the thread and calls run()
+			start(); // Start the thread for the first time
+		} else {
+			isRunning = true; // Resume the simulation
+			notify(); // Notify the thread to continue
 		}
+	}
+
+	public synchronized void stopSimulation() {
+		isRunning = false; // Pause the simulation
 	}
 
 	@Override
 	public void run() {
-		while (isRunning) {
-			simulateGeneration();
-			try {
-				Thread.sleep(1000); // Sleep for 1 second before simulating the next generation
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		while (true) {
+			if (!isRunning) {
+				try {
+					synchronized (this) {
+						wait(); // Wait until notified to resume
+					}
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+					break;
+				}
 			}
 
-			if (generation == 1000) {
-				isRunning = false;
+			simulateGeneration();
+
+			try {
+				Thread.sleep(1000); // Sleep for 1 second between generations
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				break;
 			}
 		}
+	}
+
+	public synchronized void resetSimulation() {
+		isRunning = false;
+		hasStarted = false; // Allow the thread to be reused
+		reset(); // Reset the simulation state
 	}
 
 	public void reset() {
@@ -123,12 +150,7 @@ public class Simulation extends Thread {
 
 		if (statsArea != null) {
 			// Safely update the statsArea in the event dispatch thread
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					statsArea.setText(stats);
-				}
-			});
+			SwingUtilities.invokeLater(() -> statsArea.setText(stats));
 		}
 
 		System.out.println(stats);
