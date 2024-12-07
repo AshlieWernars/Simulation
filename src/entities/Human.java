@@ -31,92 +31,144 @@ public class Human {
 	private int socialDominance; // Desire to lead or control social situations
 
 	public Human() {
-	    this.age = new Random().nextInt(101); // Random age between 0 and 100
+		this.age = new Random().nextInt(101); // Random age between 0 and 100
 
-	    this.health = new Random().nextInt(11); // Random health between 0 and 10
-	    this.socialSkill = new Random().nextInt(11); // Random social skill between 0 and 10
-	    this.physicalStrength = new Random().nextInt(11); // Random physical strength between 0 and 10
-	    this.mentalHealth = new Random().nextInt(11); // Random mental health between 0 and 10
-	    this.extroversion = new Random().nextInt(11); // Random extroversion between 0 and 10
-	    this.neuroticism = new Random().nextInt(11); // Random neuroticism between 0 and 10
-	    this.openness = new Random().nextInt(11); // Random openness between 0 and 10
+		this.health = 5 + new Random().nextInt(6); // Random health between 5 and 10
+		this.socialSkill = 5 + new Random().nextInt(6); // Random social skill between 5 and 10
+		this.physicalStrength = 5 + new Random().nextInt(6); // Random physical strength between 5 and 10
+		this.mentalHealth = 5 + new Random().nextInt(6); // Random mental health between 5 and 10
+		this.extroversion = 5 + new Random().nextInt(6); // Random extroversion between 5 and 10
+		this.neuroticism = 5 + new Random().nextInt(6); // Random neuroticism between 5 and 10
+		this.openness = 5 + new Random().nextInt(6); // Random openness between 5 and 10
 
-	    // Additional traits with random values between 0 and 10
-	    this.intelligence = new Random().nextInt(11); // Random intelligence between 0 and 10
-	    this.attractiveness = new Random().nextInt(11); // Random attractiveness between 0 and 10
-	    this.empathy = new Random().nextInt(11); // Random empathy between 0 and 10
-	    this.creativity = new Random().nextInt(11); // Random creativity between 0 and 10
-	    this.motivation = new Random().nextInt(11); // Random motivation between 0 and 10
-	    this.healthRiskTolerance = new Random().nextInt(11); // Random health risk tolerance between 0 and 10
-	    this.conscientiousness = new Random().nextInt(11); // Random conscientiousness between 0 and 10
-	    this.stressResilience = new Random().nextInt(11); // Random stress resilience between 0 and 10
-	    this.parentalInstinct = new Random().nextInt(11); // Random parental instinct between 0 and 10
-	    this.socialDominance = new Random().nextInt(11); // Random social dominance between 0 and 10
+		// Additional traits with random values between 5 and 10
+		this.intelligence = 5 + new Random().nextInt(6); // Random intelligence between 5 and 10
+		this.attractiveness = 5 + new Random().nextInt(6); // Random attractiveness between 5 and 10
+		this.empathy = 5 + new Random().nextInt(6); // Random empathy between 5 and 10
+		this.creativity = 5 + new Random().nextInt(6); // Random creativity between 5 and 10
+		this.motivation = 5 + new Random().nextInt(6); // Random motivation between 5 and 10
+		this.healthRiskTolerance = 5 + new Random().nextInt(6); // Random health risk tolerance between 5 and 10
+		this.conscientiousness = 5 + new Random().nextInt(6); // Random conscientiousness between 5 and 10
+		this.stressResilience = 5 + new Random().nextInt(6); // Random stress resilience between 5 and 10
+		this.parentalInstinct = 5 + new Random().nextInt(6); // Random parental instinct between 5 and 10
+		this.socialDominance = 5 + new Random().nextInt(6); // Random social dominance between 5 and 10
 
-	    // Random behavior
-	    this.behavior = Behavior.randomBehavior();
+		// Random behavior
+		this.behavior = Behavior.randomBehavior();
 
-	    this.updateBehaviorBasedOnTraits();
+		this.updateBehaviorBasedOnTraits();
 	}
 
 	public void updateBehaviorBasedOnTraits() {
-	    // Modify behavior based on traits
+		// Modify behavior based on traits
 
-	    // Highly social and skilled individuals tend to cooperate
-	    if (this.extroversion > 7 && this.socialSkill > 6) {
-	        this.behavior = Behavior.COOPERATIVE;
-	    }
-	    // High neuroticism, poor mental health, or high health risk tolerance might lead to aggression
-	    else if (this.neuroticism > 6 || this.mentalHealth < 3 || this.healthRiskTolerance > 7) {
-	        this.behavior = Behavior.AGGRESSIVE;
-	    }
-	    // Individuals with high empathy, motivation, and parental instinct might behave in a friendly way
-	    else if (this.empathy > 6 && this.motivation > 5 && this.parentalInstinct > 6) {
-	        this.behavior = Behavior.FRIENDLY;
-	    }
-	    // High creativity, intelligence, and openness might lead to curious behavior
-	    else if (this.creativity > 7 && this.intelligence > 6 && this.openness > 6) {
-	        this.behavior = Behavior.CURIOUS;
-	    }
-	    // Individuals with high stress resilience, conscientiousness, and social dominance might be more defensive
-	    else if (this.stressResilience > 6 && this.conscientiousness > 6 && this.socialDominance > 6) {
-	        this.behavior = Behavior.DEFENSIVE;
-	    }
-	    // High attractiveness and extroversion can result in a more dominant and self-interested personality
-	    else if (this.attractiveness > 7 && this.extroversion > 6) {
-	        this.behavior = Behavior.GREEDY;
-	    }
-	    // High levels of laziness and low motivation might result in a lazy behavior
-	    else if (this.socialSkill < 4 && this.motivation < 3) {
-	        this.behavior = Behavior.LAZY;
-	    }
-	    // Individuals with high levels of honesty and low neuroticism tend to be more honest
-	    else if (this.neuroticism < 3 && this.socialSkill > 7) {
-	        this.behavior = Behavior.HONEST;
-	    }
-	    // High levels of neuroticism combined with low openness might lead to deceptive behavior
-	    else if (this.neuroticism > 6 && this.openness < 4) {
-	        this.behavior = Behavior.DECEPTIVE;
-	    }
-	    // Default behavior is neutral if no conditions match
-	    else {
-	        this.behavior = Behavior.NEUTRAL;
-	    }
+		// Highly social and skilled individuals tend to cooperate
+		if (this.extroversion > 7 && this.socialSkill > 6) {
+			this.behavior = Behavior.COOPERATIVE;
+		}
+		// Check if at least two conditions are true for aggression
+		// low conscientiousness, low stressResilience, high socialDominance, high
+		// healthRiskTolerance
+		else if ((this.conscientiousness < 5 && this.stressResilience < 5) || (this.socialDominance > 7 && this.healthRiskTolerance > 7) || (this.conscientiousness < 5 && this.socialDominance > 7) || (this.stressResilience < 5 && this.healthRiskTolerance > 7)) {
+			this.behavior = Behavior.AGGRESSIVE; // Trigger aggression if at least two conditions are met
+		}
+		// Individuals with high empathy, motivation, and parental instinct might behave
+		// in a friendly way
+		else if (this.empathy > 6 && this.motivation > 5 && this.parentalInstinct > 6) {
+			this.behavior = Behavior.FRIENDLY;
+		}
+		// High creativity, intelligence, and openness might lead to curious behavior
+		else if (this.creativity > 7 && this.intelligence > 6 && this.openness > 6) {
+			this.behavior = Behavior.CURIOUS;
+		}
+		// Individuals with high stress resilience, conscientiousness, and social
+		// dominance might be more defensive
+		else if (this.stressResilience > 6 && this.conscientiousness > 6 && this.socialDominance > 6) {
+			this.behavior = Behavior.DEFENSIVE;
+		}
+		// High attractiveness and extroversion can result in a more dominant and
+		// self-interested personality
+		else if (this.attractiveness > 7 && this.extroversion > 6) {
+			this.behavior = Behavior.GREEDY;
+		}
+		// Low social skill and low motivation might result in a lazy behavior
+		else if (this.socialSkill < 4 && this.motivation < 3) {
+			this.behavior = Behavior.LAZY;
+		}
+		// Individuals with high levels of honesty and low neuroticism tend to be more
+		// honest
+		else if (this.neuroticism < 3 && this.socialSkill > 7) {
+			this.behavior = Behavior.HONEST;
+		}
+		// High levels of neuroticism combined with low openness might lead to deceptive
+		// behavior
+		else if (this.neuroticism > 6 && this.openness < 4) {
+			this.behavior = Behavior.DECEPTIVE;
+		}
+		// Default behavior is neutral if no conditions match
+		else {
+			this.behavior = Behavior.NEUTRAL;
+		}
 	}
 
-	// Method to interact with another human
 	public void interact(Human other) {
-		// Example of how interactions might affect mental health
+		// Example of how interactions might affect mental health and other traits
 		if (this.behavior.equals(Behavior.AGGRESSIVE) && other.getBehavior().equals(Behavior.COOPERATIVE) || this.behavior.equals(Behavior.COOPERATIVE) && other.getBehavior().equals(Behavior.AGGRESSIVE)) {
-			this.mentalHealth -= 1; // Decrease mental health by 1 for aggressive behavior
+			this.mentalHealth -= 1; // Decrease mental health for aggressive behavior
+			other.setMentalHealth(other.getMentalHealth() - 1); // Decrease the other human's mental health
+
+			// Aggressive person may have reduced social skills after confrontation
+			this.socialSkill = Math.max(0, this.socialSkill - 1);
+			other.setSocialSkill(Math.max(0, other.getSocialSkill() - 1)); // Social skill drops for both
+
 		} else if (this.behavior.equals(Behavior.AGGRESSIVE) && other.getBehavior().equals(Behavior.AGGRESSIVE)) {
-			this.mentalHealth -= 1; // Negative impact if you're cooperative with an aggressive person
+			this.mentalHealth -= 2; // Worse mental health impact when both are aggressive
+			other.setMentalHealth(other.getMentalHealth() - 2); // Both lose mental health
+
+			// Both humans' social skills may drop after an aggressive interaction
+			this.socialSkill = Math.max(0, this.socialSkill - 2);
+			other.setSocialSkill(Math.max(0, other.getSocialSkill() - 2)); // Social skill drops for both
+
 		} else if (this.behavior.equals(Behavior.COOPERATIVE) && other.getBehavior().equals(Behavior.COOPERATIVE)) {
-			this.mentalHealth += 2;
+			this.mentalHealth += 2; // Increase mental health for cooperative behavior
+			other.setMentalHealth(other.getMentalHealth() + 2); // Increase the other human's mental health
+
+			// Positive impact on social skill
+			this.socialSkill = Math.min(10, this.socialSkill + 1);
+			other.setSocialSkill(Math.min(10, other.getSocialSkill() + 1)); // Social skill improves for both
+
+		} else if (this.behavior.equals(Behavior.COOPERATIVE) && other.getBehavior().equals(Behavior.FRIENDLY)) {
+			this.mentalHealth += 1; // Friendly behavior boosts mental health
+			other.setMentalHealth(other.getMentalHealth() + 1);
+
+			// Cooperative and friendly people may increase empathy
+			this.empathy = Math.min(10, this.empathy + 1);
+			other.setEmpathy(Math.min(10, other.getEmpathy() + 1)); // Empathy grows for both
+
+		} else if (this.behavior.equals(Behavior.AGGRESSIVE) && other.getBehavior().equals(Behavior.DEFENSIVE)) {
+			this.mentalHealth -= 1; // Aggressive behavior conflicts with defensive behavior
+			other.setMentalHealth(other.getMentalHealth() - 1);
+
+			// Defensive person might raise their social dominance in such situations
+			other.setSocialDominance(Math.min(10, other.getSocialDominance() + 1));
 		}
 
 		// Prevent mental health from going negative and ensure it does not exceed 10
 		this.mentalHealth = Math.max(0, Math.min(10, this.mentalHealth));
+		other.setMentalHealth(Math.max(0, Math.min(10, other.getMentalHealth())));
+
+		// Example: Affecting physical strength or attractiveness after certain
+		// interactions
+		if (this.behavior.equals(Behavior.COOPERATIVE) && other.getBehavior().equals(Behavior.COOPERATIVE)) {
+			// Cooperation could lead to increased strength through teamwork (example)
+			this.physicalStrength = Math.min(10, this.physicalStrength + 1);
+			other.setPhysicalStrength(Math.min(10, other.getPhysicalStrength() + 1));
+		} else if (this.behavior.equals(Behavior.AGGRESSIVE) && other.getBehavior().equals(Behavior.AGGRESSIVE)) {
+			// Aggressive behaviors could result in a physical decrease after an argument or
+			// fight
+			this.physicalStrength = Math.max(0, this.physicalStrength - 1);
+			other.setPhysicalStrength(Math.max(0, other.getPhysicalStrength() - 1));
+		}
 	}
 
 	public static Human reproduce(Human parent1, Human parent2) {

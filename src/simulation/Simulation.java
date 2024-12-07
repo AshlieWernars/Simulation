@@ -13,7 +13,7 @@ import entities.Human;
 public class Simulation extends Thread {
 
 	private List<Human> population;
-	private final int populationLimit = 200; // Set the population limit to 200
+	private final int populationLimit = 10; // Set the population limit to 200
 	private int generation;
 
 	private int aggressiveCount;
@@ -55,7 +55,7 @@ public class Simulation extends Thread {
 	public Simulation() {
 		this.population = new ArrayList<>();
 		this.generation = 0;
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < populationLimit / 2; i++) {
 			population.add(new Human());
 		}
 
