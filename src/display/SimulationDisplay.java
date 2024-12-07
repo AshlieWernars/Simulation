@@ -1,10 +1,18 @@
 package display;
 
-import simulation.Simulation; // Assuming Simulation is in the 'simulation' package
-import javax.swing.*;
-import java.awt.*;
+import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.Timer;
+import javax.swing.WindowConstants;
+
+import simulation.Simulation; // Assuming Simulation is in the 'simulation' package
 
 public class SimulationDisplay {
 
@@ -38,7 +46,7 @@ public class SimulationDisplay {
 
 		frame.getContentPane().add(panel);
 		frame.setSize(500, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		// Button Actions
 		startButton.addActionListener(new ActionListener() {
@@ -107,6 +115,7 @@ public class SimulationDisplay {
 		statsArea.setText(stats);
 	}
 
+	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// Assuming you have a Simulation object to pass in
 		Simulation simulation = new Simulation();
