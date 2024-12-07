@@ -10,7 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import javax.swing.Timer;
 import javax.swing.WindowConstants;
 
 import simulation.Simulation; // Assuming Simulation is in the 'simulation' package
@@ -19,12 +18,9 @@ public class SimulationDisplay {
 
 	private JFrame frame;
 	private JButton startButton;
-	private JButton pauseButton;
-	private JButton stopButton;
 	private JButton resetButton;
 	private JTextArea statsArea;
 	private Simulation simulation;
-	private Timer simulationTimer;
 
 	public SimulationDisplay(Simulation simulation) {
 		this.simulation = simulation;
@@ -32,29 +28,21 @@ public class SimulationDisplay {
 
 		// Create buttons
 		startButton = new JButton("Start");
-		pauseButton = new JButton("Pause");
-		stopButton = new JButton("Stop");
 		resetButton = new JButton("Reset");
 
 		// Set preferred size for buttons
 		startButton.setPreferredSize(new Dimension(100, 40));
-		pauseButton.setPreferredSize(new Dimension(100, 40));
-		stopButton.setPreferredSize(new Dimension(100, 40));
 		resetButton.setPreferredSize(new Dimension(100, 40));
 
 		// Create panel and add buttons
 		JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2x2 grid layout
 		buttonPanel.add(startButton);
-		buttonPanel.add(pauseButton);
-		buttonPanel.add(stopButton);
 		buttonPanel.add(resetButton);
 
 		// Add panel to the frame
 		frame.add(buttonPanel, BorderLayout.CENTER);
 
 		startButton.setPreferredSize(new Dimension(100, 40));
-		pauseButton.setPreferredSize(new Dimension(100, 40));
-		stopButton.setPreferredSize(new Dimension(100, 40));
 		resetButton.setPreferredSize(new Dimension(100, 40));
 
 		statsArea = new JTextArea(10, 30);
@@ -75,22 +63,6 @@ public class SimulationDisplay {
 			}
 		});
 
-		pauseButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Pause");
-				pauseSimulation();
-			}
-		});
-
-		stopButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Stop");
-				stopSimulation();
-			}
-		});
-
 		resetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -104,20 +76,6 @@ public class SimulationDisplay {
 
 	private void startSimulation() {
 		simulation.startSimulation();
-	}
-
-	private void pauseSimulation() {
-		if (simulationTimer != null && simulationTimer.isRunning()) {
-			simulationTimer.stop();
-		}
-	}
-
-	private void stopSimulation() {
-		if (simulationTimer != null) {
-			simulationTimer.stop();
-		}
-		simulation.reset();
-		simulation.updateStats();
 	}
 
 	private void resetSimulation() {

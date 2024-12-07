@@ -70,18 +70,12 @@ public class Simulation extends Thread {
 			simulateGeneration();
 
 			try {
-				Thread.sleep(1000); // Sleep for 1 second between generations
+				Thread.sleep(1); // Sleep for 1 second between generations
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				break;
 			}
 		}
-	}
-
-	public synchronized void resetSimulation() {
-		isRunning = false;
-		hasStarted = false; // Allow the thread to be reused
-		reset(); // Reset the simulation state
 	}
 
 	public void reset() {

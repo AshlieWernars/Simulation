@@ -1,6 +1,7 @@
 package genetics;
 
 public class Gene {
+
 	private String name;
 	private int expression; // Expression of the gene (0-10)
 
