@@ -1,0 +1,183 @@
+package entities;
+
+import genetics.Gene;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+public class Human {
+	private List<Gene> genes;
+	private String behavior; // Aggressive, Cooperative, Neutral
+	private int health;
+	private int socialSkill; // How well they interact with others
+	private int physicalStrength; // Physical strength for reproduction
+	private int mentalHealth; // Mental health
+
+	// Personality traits (scale of 1-10)
+	private int extroversion;
+	private int neuroticism;
+	private int openness;
+
+	public Human() {
+		this.genes = new ArrayList<>(); // Initialize gene list
+		this.health = Math.max(new Random().nextInt(11), 5); // Ensure health is at least 5
+		this.socialSkill = Math.max(new Random().nextInt(11), 5); // Ensure social skill is at least 5
+		this.physicalStrength = Math.max(new Random().nextInt(11), 5); // Ensure physical strength is at least 5
+		this.mentalHealth = Math.max(new Random().nextInt(11), 5); // Ensure mental health is at least 5
+
+		// Random personality traits (scale of 1-10)
+		this.extroversion = Math.max(new Random().nextInt(11), 5); // Ensure extroversion is at least 5
+		this.neuroticism = Math.max(new Random().nextInt(11), 5); // Ensure neuroticism is at least 5
+		this.openness = Math.max(new Random().nextInt(11), 5); // Ensure openness is at least 5
+
+		// Random behavior
+		this.behavior = new Random().nextBoolean() ? "Aggressive" : "Cooperative";
+
+		// Add random genes
+		for (int i = 0; i < 10; i++) { // Assuming 10 genes per human
+			// Randomly create genes (could be based on specific logic or random values)
+			String geneType = (new Random().nextBoolean()) ? "GeneA" : "GeneB"; // Example of gene type
+			this.genes.add(new Gene(geneType, new Random().nextInt(11))); // Add random gene to the list
+		}
+
+		this.updateBehaviorBasedOnTraits();
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void setHealth(int health) {
+		this.health = Math.max(0, Math.min(10, health)); // Clamps health between 0 and 10
+	}
+
+	public int getSocialSkill() {
+		return socialSkill;
+	}
+
+	public void setSocialSkill(int socialSkill) {
+		this.socialSkill = Math.max(0, Math.min(10, socialSkill)); // Clamps social skill between 0 and 10
+	}
+
+	public int getPhysicalStrength() {
+		return physicalStrength;
+	}
+
+	public void setPhysicalStrength(int physicalStrength) {
+		this.physicalStrength = Math.max(0, Math.min(10, physicalStrength)); // Clamps physical strength between 0 and 10
+	}
+
+	public int getMentalHealth() {
+		return mentalHealth;
+	}
+
+	public void setMentalHealth(int mentalHealth) {
+		this.mentalHealth = Math.max(0, Math.min(10, mentalHealth)); // Clamps mental health between 0 and 10
+	}
+
+	public int getExtroversion() {
+		return extroversion;
+	}
+
+	public void setExtroversion(int extroversion) {
+		this.extroversion = Math.max(0, Math.min(10, extroversion)); // Clamps extroversion between 0 and 10
+	}
+
+	public int getNeuroticism() {
+		return neuroticism;
+	}
+
+	public void setNeuroticism(int neuroticism) {
+		this.neuroticism = Math.max(0, Math.min(10, neuroticism)); // Clamps neuroticism between 0 and 10
+	}
+
+	public int getOpenness() {
+		return openness;
+	}
+
+	public void setOpenness(int openness) {
+		this.openness = Math.max(0, Math.min(10, openness)); // Clamps openness between 0 and 10
+	}
+
+	public void setBehavior(String behavior) {
+		this.behavior = behavior;
+	}
+
+	public String getBehavior() {
+		return behavior;
+	}
+
+	public List<Gene> getGenes() {
+		return genes;
+	}
+
+	public void setGenes(List<Gene> genes) {
+		this.genes = genes;
+	}
+
+	public void updateBehaviorBasedOnTraits() {
+		// Modify behavior based on traits
+		if (this.extroversion > 7 && this.socialSkill > 6) {
+			this.behavior = "Cooperative"; // Highly social and skilled humans tend to cooperate
+		} else if (this.neuroticism > 6 || this.mentalHealth < 3) {
+			this.behavior = "Aggressive"; // High neuroticism or poor mental health might lead to aggression
+		} else {
+			this.behavior = "Neutral"; // If the traits are more balanced, the behavior is neutral
+		}
+	}
+
+	// Method to interact with another human
+	public void interact(Human other) {
+		// Example of how interactions might affect mental health
+		if (this.behavior.equals("Aggressive") && other.getBehavior().equals("Cooperative") || this.behavior.equals("Cooperative") && other.getBehavior().equals("Aggressive")) {
+			this.mentalHealth -= 1; // Decrease mental health by 1 for aggressive behavior
+		} else if (this.behavior.equals("Aggressive") && other.getBehavior().equals("Aggressive")) {
+			this.mentalHealth -= 2; // Negative impact if you're cooperative with an aggressive person
+		} else if (this.behavior.equals("Cooperative") && other.getBehavior().equals("Cooperative")) {
+			this.mentalHealth += 2;
+		}
+
+		// Prevent mental health from going negative and ensure it does not exceed 10
+		this.mentalHealth = Math.max(0, Math.min(10, this.mentalHealth));
+	}
+
+	public static Human reproduce(Human parent1, Human parent2) {
+		Human child = new Human();
+
+		// Inherit traits (mix of parent traits)
+		child.setExtroversion((parent1.getExtroversion() + parent2.getExtroversion()) / 2);
+		child.setExtroversion(applyMutation(child.getExtroversion())); // Apply mutation to extroversion
+
+		child.setNeuroticism((parent1.getNeuroticism() + parent2.getNeuroticism()) / 2);
+		child.setNeuroticism(applyMutation(child.getNeuroticism())); // Apply mutation to neuroticism
+
+		child.setOpenness((parent1.getOpenness() + parent2.getOpenness()) / 2);
+		child.setOpenness(applyMutation(child.getOpenness())); // Apply mutation to openness
+
+		// Inherit social skills and health and apply mutation
+		child.setSocialSkill((parent1.getSocialSkill() + parent2.getSocialSkill()) / 2);
+		child.setSocialSkill(applyMutation(child.getSocialSkill())); // Apply mutation to social skill
+
+		child.setHealth((parent1.getHealth() + parent2.getHealth()) / 2);
+		child.setHealth(applyMutation(child.getHealth())); // Apply mutation to health
+
+		child.setMentalHealth((parent1.getMentalHealth() + parent2.getMentalHealth()) / 2);
+		child.setMentalHealth(applyMutation(child.getMentalHealth())); // Apply mutation to mental health
+
+		child.updateBehaviorBasedOnTraits();
+
+		return child;
+	}
+
+	// Method to apply a small mutation to a trait (between -1 and 1)
+	private static int applyMutation(int traitValue) {
+		Random rand = new Random();
+		// 1% chance to apply mutation (±1)
+		if (rand.nextDouble() < 0.01) {
+			int mutation = rand.nextInt(3) - 1; // Generate -1, 0, or 1
+			traitValue += mutation;
+		}
+		// Ensure the trait stays within the valid range (0-10)
+		return Math.max(0, Math.min(10, traitValue));
+	}
+}
