@@ -1,7 +1,9 @@
 package simulation;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
@@ -11,6 +13,7 @@ import entities.Human;
 public class Simulation extends Thread {
 
 	private List<Human> population;
+	private final int populationLimit = 200; // Set the population limit to 200
 	private int generation;
 	private int aggressiveCount;
 	private int cooperativeCount;
@@ -26,6 +29,7 @@ public class Simulation extends Thread {
 	private boolean hasStarted;
 	private String stats;
 	private JTextArea statsArea;
+	Random random = new Random();
 
 	public Simulation() {
 		this.population = new ArrayList<>();
@@ -109,6 +113,37 @@ public class Simulation extends Thread {
 		totalNeuroticism = 0;
 		totalOpenness = 0;
 
+		// Humans interact with each other
+		for (int i = 0; i < population.size(); i++) {
+			Human human1 = population.get(i);
+
+			// Randomly select a different human for interaction
+			int randomIndex;
+			do {
+				randomIndex = random.nextInt(population.size());
+			} while (randomIndex == i); // Ensure it's not the same human
+
+			Human human2 = population.get(randomIndex);
+
+			// Humans interact
+			human1.interact(human2);
+
+			human1.updateBehaviorBasedOnTraits();
+			human2.updateBehaviorBasedOnTraits();
+
+			for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
+				Human human = iterator.next();
+				human.ageOneYear();
+				if (human.getAge() >= 100) {
+					iterator.remove(); // Safely remove the human using the iterator
+				}
+			}
+
+		}
+
+		// Reproduction (based on traits compatibility)
+		reproduce();
+
 		for (Human human : population) {
 			if (human.getBehavior().equals("Aggressive")) {
 				aggressiveCount++;
@@ -127,6 +162,52 @@ public class Simulation extends Thread {
 		}
 
 		updateStats();
+	}
+
+	// Handle reproduction based on traits compatibility
+	private void reproduce() {
+		// List to store compatible humans for reproduction
+		List<Human> eligibleMates = new ArrayList<>();
+
+		// Evaluate compatibility based on traits
+		for (int i = 0; i < population.size(); i++) {
+			for (int j = i + 1; j < population.size(); j++) {
+				Human parent1 = population.get(i);
+				Human parent2 = population.get(j);
+
+				// Check if the two humans are compatible for reproduction
+				if (areCompatible(parent1, parent2)) {
+					eligibleMates.add(parent1); // Add compatible parents to the list
+					eligibleMates.add(parent2);
+				}
+			}
+		}
+
+		// Limit reproduction to the top 50% of compatible humans
+		// In this example, we simply take the first half of the eligible mates for
+		// reproduction
+		int numMatesToReproduce = eligibleMates.size() / 2;
+
+		// Reproduce using the top compatible mates
+		for (int i = 0; i < numMatesToReproduce; i++) {
+			Human parent1 = eligibleMates.get(i * 2); // Even index
+			Human parent2 = eligibleMates.get(i * 2 + 1); // Odd index
+
+			// Create a child and add to population, but don't exceed the population limit
+			if (population.size() < populationLimit) {
+				Human child = Human.reproduce(parent1, parent2);
+				population.add(child); // Add the child to the population
+			}
+		}
+	}
+
+	// Compatibility check (based on personality traits and health)
+	private boolean areCompatible(Human parent1, Human parent2) {
+		// Compatibility based on extroversion, social skill, and mental health
+		int compatibilityScore = Math.abs(parent1.getExtroversion() - parent2.getExtroversion()) + Math.abs(parent1.getSocialSkill() - parent2.getSocialSkill()) + Math.abs(parent1.getMentalHealth() - parent2.getMentalHealth());
+
+		// We assume that a lower score means higher compatibility
+		return compatibilityScore <= 10; // Arbitrary threshold for compatibility
 	}
 
 	public void updateStats() {

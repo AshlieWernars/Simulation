@@ -6,26 +6,29 @@ import java.util.List;
 import java.util.Random;
 
 public class Human {
+
 	private List<Gene> genes;
 	private String behavior; // Aggressive, Cooperative, Neutral
+
+	private int age; // Age of the human
+
 	private int health;
 	private int socialSkill; // How well they interact with others
 	private int physicalStrength; // Physical strength for reproduction
 	private int mentalHealth; // Mental health
-
-	// Personality traits (scale of 1-10)
 	private int extroversion;
 	private int neuroticism;
 	private int openness;
 
 	public Human() {
 		this.genes = new ArrayList<>(); // Initialize gene list
+
+		this.age = new Random().nextInt(101); // Random age between 0 and 100
+
 		this.health = Math.max(new Random().nextInt(11), 5); // Ensure health is at least 5
 		this.socialSkill = Math.max(new Random().nextInt(11), 5); // Ensure social skill is at least 5
 		this.physicalStrength = Math.max(new Random().nextInt(11), 5); // Ensure physical strength is at least 5
 		this.mentalHealth = Math.max(new Random().nextInt(11), 5); // Ensure mental health is at least 5
-
-		// Random personality traits (scale of 1-10)
 		this.extroversion = Math.max(new Random().nextInt(11), 5); // Ensure extroversion is at least 5
 		this.neuroticism = Math.max(new Random().nextInt(11), 5); // Ensure neuroticism is at least 5
 		this.openness = Math.max(new Random().nextInt(11), 5); // Ensure openness is at least 5
@@ -41,6 +44,18 @@ public class Human {
 		}
 
 		this.updateBehaviorBasedOnTraits();
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = Math.max(0, Math.min(age, 100)); // Ensure age stays between 0 and 100
+	}
+
+	public void ageOneYear() {
+		this.age++;
 	}
 
 	public int getHealth() {
