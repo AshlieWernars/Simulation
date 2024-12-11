@@ -63,54 +63,71 @@ public class Human {
 	}
 
 	public void updateBehaviorBasedOnTraits() {
+		ArrayList<Behavior> possibleBehaviors = new ArrayList<>();
+
 		// Modify behavior based on traits
 
 		// Highly social and skilled individuals tend to cooperate
 		if (this.extroversion > 7 && this.socialSkill > 6) {
-			this.behavior = Behavior.COOPERATIVE;
+			possibleBehaviors.add(Behavior.COOPERATIVE);
 		}
+
 		// Check if at least two conditions are true for aggression
 		// low conscientiousness, low stressResilience, high socialDominance, high
 		// healthRiskTolerance
-		else if ((this.conscientiousness < 5 && this.stressResilience < 5) || (this.socialDominance > 7 && this.healthRiskTolerance > 7) || (this.conscientiousness < 5 && this.socialDominance > 7) || (this.stressResilience < 5 && this.healthRiskTolerance > 7)) {
-			this.behavior = Behavior.AGGRESSIVE; // Trigger aggression if at least two conditions are met
+		if ((this.conscientiousness < 5 && this.stressResilience < 5) || (this.socialDominance > 7 && this.healthRiskTolerance > 7) || (this.conscientiousness < 5 && this.socialDominance > 7) || (this.stressResilience < 5 && this.healthRiskTolerance > 7)) {
+			possibleBehaviors.add(Behavior.AGGRESSIVE); // Trigger aggression if at least two conditions are met
 		}
+
 		// Individuals with high empathy, motivation, and parental instinct might behave
 		// in a friendly way
-		else if (this.empathy > 6 && this.motivation > 5 && this.parentalInstinct > 6) {
-			this.behavior = Behavior.FRIENDLY;
+		if (this.empathy > 6 && this.motivation > 5 && this.parentalInstinct > 6) {
+			possibleBehaviors.add(Behavior.FRIENDLY);
 		}
+
 		// High creativity, intelligence, and openness might lead to curious behavior
-		else if (this.creativity > 7 && this.intelligence > 6 && this.openness > 6) {
-			this.behavior = Behavior.CURIOUS;
+		if (this.creativity > 7 && this.intelligence > 6 && this.openness > 6) {
+			possibleBehaviors.add(Behavior.CURIOUS);
 		}
+
 		// Individuals with high stress resilience, conscientiousness, and social
 		// dominance might be more defensive
-		else if (this.stressResilience > 6 && this.conscientiousness > 6 && this.socialDominance > 6) {
-			this.behavior = Behavior.DEFENSIVE;
+		if (this.stressResilience > 6 && this.conscientiousness > 6 && this.socialDominance > 6) {
+			possibleBehaviors.add(Behavior.DEFENSIVE);
 		}
+
 		// High attractiveness and extroversion can result in a more dominant and
 		// self-interested personality
-		else if (this.attractiveness > 7 && this.extroversion > 6) {
-			this.behavior = Behavior.GREEDY;
+		if (this.attractiveness > 7 && this.extroversion > 6) {
+			possibleBehaviors.add(Behavior.GREEDY);
 		}
+
 		// Low social skill and low motivation might result in a lazy behavior
-		else if (this.socialSkill < 4 && this.motivation < 3) {
-			this.behavior = Behavior.LAZY;
+		if (this.socialSkill < 4 && this.motivation < 3) {
+			possibleBehaviors.add(Behavior.LAZY);
 		}
+
 		// Individuals with high levels of honesty and low neuroticism tend to be more
 		// honest
-		else if (this.neuroticism < 3 && this.socialSkill > 7) {
-			this.behavior = Behavior.HONEST;
+		if (this.neuroticism < 3 && this.socialSkill > 7) {
+			possibleBehaviors.add(Behavior.HONEST);
 		}
+
 		// High levels of neuroticism combined with low openness might lead to deceptive
 		// behavior
-		else if (this.neuroticism > 6 && this.openness < 4) {
-			this.behavior = Behavior.DECEPTIVE;
+		if (this.neuroticism > 6 && this.openness < 4) {
+			possibleBehaviors.add(Behavior.DECEPTIVE);
 		}
-		// Default behavior is neutral if no conditions match
-		else {
-			this.behavior = Behavior.NEUTRAL;
+		
+		if(possibleBehaviors.contains(behavior)) {
+			return;
+		}
+		
+		// Assign behavior randomly from possible behavior, if there are any
+		if (!possibleBehaviors.isEmpty()) {
+			behavior = possibleBehaviors.get(new Random().nextInt(possibleBehaviors.size()));
+		} else {
+			behavior = Behavior.NEUTRAL;
 		}
 	}
 
@@ -161,6 +178,10 @@ public class Human {
 
 		if (this.socialSkill > 5 && this.conscientiousness > 5) {
 			possibleJobs.add(Job.BUILDER); // Conscientious and social individuals
+		}
+		
+		if(possibleJobs.contains(job)) {
+			return;
 		}
 
 		// Assign job randomly from possible jobs, if there are any
