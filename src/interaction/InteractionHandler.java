@@ -8,6 +8,18 @@ import entities.Human;
 public class InteractionHandler {
 
 	public static void interact(Human human1, Human human2) {
+		if (human1.getAge() < 18 && human2.getAge() < 18) {
+			// interact child
+		} else if (human1.getAge() < 18 && human2.getAge() > 18) {
+			interactAdultAndChild(human1, human2);
+		} else if (human2.getAge() < 18 && human1.getAge() > 18) {
+			interactAdultAndChild(human2, human1);
+		} else if (human1.getAge() > 18 && human2.getAge() > 18) {
+			interactAdultAndAdult(human1, human2);
+		}
+	}
+
+	private static void interactAdultAndAdult(Human human1, Human human2) {
 		// Example of how interactions might affect mental health and other traits
 		if (human1.getBehavior().equals(Behavior.AGGRESSIVE) && human2.getBehavior().equals(Behavior.COOPERATIVE) || human1.getBehavior().equals(Behavior.COOPERATIVE) && human2.getBehavior().equals(Behavior.AGGRESSIVE)) {
 			human1.setMentalHealth(human1.getMentalHealth() - 1); // Decrease mental health for aggressive behavior
@@ -61,6 +73,28 @@ public class InteractionHandler {
 			human1.setPhysicalStrength(Math.max(0, human1.getPhysicalStrength() - 1));
 			human2.setPhysicalStrength(Math.max(0, human2.getPhysicalStrength() - 1));
 		}
+
+	}
+
+	public static void interactAdultAndChild(Human child, Human adult) {
+		if (adult.getParentalInstinct() < 5) { // Low parental instinct, potentially negative outcome
+			child.setMentalHealth(child.getMentalHealth() - 1);
+			adult.setMentalHealth(adult.getMentalHealth() - 1);
+		} else if (adult.getParentalInstinct() >= 5) { // Positive parental instinct could improve child’s well-being
+			child.setMentalHealth(Math.min(10, child.getMentalHealth() + 1)); // Increase mental health for the child
+			adult.setMentalHealth(Math.min(10, adult.getMentalHealth() + 1)); // Positive reinforcement for the adult
+		}
+
+		// Example: Influence of adult's behavior on the child
+		if (adult.getBehavior().equals(Behavior.COOPERATIVE) || adult.getBehavior().equals(Behavior.FRIENDLY)) {
+			child.setSocialSkill(Math.min(10, child.getSocialSkill() + 1)); // Cooperative behavior boosts child’s social skills
+		} else if (adult.getBehavior().equals(Behavior.AGGRESSIVE) || adult.getBehavior().equals(Behavior.DECEPTIVE)) {
+			child.setSocialSkill(Math.max(0, child.getSocialSkill() - 1)); // Aggressive behavior might harm the child's social skill
+		}
+
+		// Ensure mental health stays within range
+		child.setMentalHealth(Math.max(0, Math.min(10, child.getMentalHealth())));
+		adult.setMentalHealth(Math.max(0, Math.min(10, adult.getMentalHealth())));
 	}
 
 	/**
