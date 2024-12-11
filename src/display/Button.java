@@ -28,11 +28,18 @@ public class Button {
 	}
 
 	public void render(Graphics g) {
-		g.setColor(Color.white);
-		g.fillRect(x, y, width, height);
+	    g.setColor(Color.white);
+	    g.fillRect(x, y, width, height);
 
-		g.setColor(Color.black);
-		g.drawString(text, x, y);
+	    g.setColor(Color.black);
+
+	    // Calculate the position for centered text
+	    int textWidth = g.getFontMetrics().stringWidth(text); // Text width
+	    int textHeight = g.getFontMetrics().getHeight(); // Text height
+	    int textX = x + (width - textWidth) / 2; // Center horizontally
+	    int textY = y + (height + textHeight / 2) / 2; // Center vertically
+
+	    g.drawString(text, textX, textY);
 	}
 
 	public int getX() {
