@@ -8,17 +8,19 @@ import job.Job;
 
 public class Human {
 
-	private Behavior behavior; // Aggressive, Cooperative, Neutral
+	private int age = 0; // Age of the human
+	private Job job = null;
+	private int money = 0;
 
-	private int age; // Age of the human
+	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
 	private int health;
 	private int socialSkill; // How well they interact with others
 	private int physicalStrength; // Physical strength
 	private int mentalHealth; // Mental health
-	private int extroversion;
-	private int neuroticism;
-	private int openness;
+	private int extroversion; // How outgoing the human is
+	private int neuroticism; // emotional instability
+	private int openness; // willingness to explore new experiences
 
 	// Additional traits
 	private int intelligence; // Cognitive abilities
@@ -31,9 +33,6 @@ public class Human {
 	private int stressResilience; // Ability to handle stress
 	private int parentalInstinct; // Inclination to care for offspring
 	private int socialDominance; // Desire to lead or control social situations
-
-	private Job job;
-	private int money;
 
 	public Human() {
 		this.age = new Random().nextInt(101); // Random age between 0 and 100
@@ -57,9 +56,6 @@ public class Human {
 		this.stressResilience = 5 + new Random().nextInt(6); // Random stress resilience between 5 and 10
 		this.parentalInstinct = 5 + new Random().nextInt(6); // Random parental instinct between 5 and 10
 		this.socialDominance = 5 + new Random().nextInt(6); // Random social dominance between 5 and 10
-
-		// Random behavior
-		this.behavior = Behavior.randomBehavior();
 
 		this.job = Job.randomJob();
 
@@ -119,6 +115,11 @@ public class Human {
 	}
 
 	public void assignJob() {
+		if (age < 18) { // Person under 18 can't have a job
+			job = null;
+			return;
+		}
+
 		ArrayList<Job> possibleJobs = new ArrayList<>();
 
 		// Assign job based on traits
@@ -168,10 +169,6 @@ public class Human {
 		} else {
 			job = Job.FARMER; // Default fallback job
 		}
-	}
-
-	public Job getJob() {
-		return this.job;
 	}
 
 	public void interact(Human other) {
@@ -236,6 +233,9 @@ public class Human {
 
 	public static Human reproduce(Human parent1, Human parent2) {
 		Human child = new Human();
+
+		child.setAge(0);
+		child.job = null;
 
 		// Inherit traits (mix of parent traits)
 		child.setExtroversion(mixTraits(parent1.getExtroversion(), parent2.getExtroversion()));
@@ -320,6 +320,10 @@ public class Human {
 
 	public Behavior getBehavior() {
 		return behavior;
+	}
+
+	public Job getJob() {
+		return job;
 	}
 
 	public int getAge() {
