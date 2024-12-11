@@ -33,6 +33,8 @@ public class Human {
 	private int stressResilience; // Ability to handle stress
 	private int parentalInstinct; // Inclination to care for offspring
 	private int socialDominance; // Desire to lead or control social situations
+	
+	private boolean hadChildDuringSimStep = false;
 
 	public Human() {
 		this.age = new Random().nextInt(101); // Random age between 0 and 100
@@ -374,5 +376,13 @@ public class Human {
 
 	public double getMoney() {
 		return money;
+	}
+
+	public boolean hadChildDuringSimStep() {
+		return hadChildDuringSimStep;
+	}
+
+	public void setHadChildDuringSimStep(boolean hadChildDuringSimStep) {
+		this.hadChildDuringSimStep = hadChildDuringSimStep;
 	}
 }

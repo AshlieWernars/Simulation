@@ -149,6 +149,9 @@ public class InteractionHandler {
 		child.setSocialDominance(applyMutation(child.getSocialDominance())); // Apply mutation to social dominance
 
 		child.updateBehaviorBasedOnTraits();
+		
+		parent1.setHadChildDuringSimStep(true);
+		parent2.setHadChildDuringSimStep(true);
 
 		return child;
 	}
