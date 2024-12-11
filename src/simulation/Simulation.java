@@ -391,6 +391,7 @@ public class Simulation extends Thread {
 
 	public void updateStats() {
 		stats = "Generation: " + generation + "\n";
+		stats += "Population Size: " + population.size() + "\n";
 
 		stats += "Aggressive: " + aggressiveCount + "\n";
 		stats += "Cooperative: " + cooperativeCount + "\n";
