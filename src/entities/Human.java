@@ -199,10 +199,7 @@ public class Human {
 
 		double salaryEarned = job.doJob(job, this);
 
-		// Round salaryEarned to the nearest integer
-		salaryEarned = Math.round(salaryEarned);
-
-		money += salaryEarned;
+		money += Math.round(salaryEarned);
 	}
 
 	public void setBehavior(Behavior behavior) {
