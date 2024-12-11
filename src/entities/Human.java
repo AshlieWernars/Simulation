@@ -199,7 +199,7 @@ public class Human {
 
 		double salaryEarned = job.doJob(job, this);
 
-		money += Math.round(salaryEarned);
+		money += (int) Math.round(salaryEarned);
 	}
 
 	public void setBehavior(Behavior behavior) {
