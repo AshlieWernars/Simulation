@@ -197,36 +197,38 @@ public class Simulation extends Thread {
 			human1.assignJob();
 			human2.assignJob();
 
-			for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
-				Human human = iterator.next();
-				human.ageOneYear();
-
-				// Assuming the human's age is already incremented
-				double deathChance = 0;
-
-				if (human.getAge() <= 1) {
-					deathChance = 0.003; // 0.3% chance for infants
-				} else if (human.getAge() <= 40) {
-					deathChance = 0.001; // 0.1% chance for young adults
-				} else if (human.getAge() <= 60) {
-					deathChance = 0.005; // 0.5% chance for middle-aged adults
-				} else if (human.getAge() <= 80) {
-					deathChance = 0.02; // 2% chance for older adults
-				} else if (human.getAge() <= 90) {
-					deathChance = 0.10; // 10% chance for 80-90
-				} else {
-					deathChance = 0.30; // 30% chance for 90+
-				}
-
-				// Random chance to die based on the death chance
-				if (random.nextFloat() < deathChance) {
-					iterator.remove(); // Remove the human if they die
-				}
-			}
+			human1.doJob();
 		}
 
 		// Reproduction (based on traits compatibility)
 		reproduce();
+
+		for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
+			Human human = iterator.next();
+			human.ageOneYear();
+
+			// Assuming the human's age is already incremented
+			double deathChance = 0;
+
+			if (human.getAge() <= 1) {
+				deathChance = 0.003; // 0.3% chance for infants
+			} else if (human.getAge() <= 40) {
+				deathChance = 0.001; // 0.1% chance for young adults
+			} else if (human.getAge() <= 60) {
+				deathChance = 0.005; // 0.5% chance for middle-aged adults
+			} else if (human.getAge() <= 80) {
+				deathChance = 0.02; // 2% chance for older adults
+			} else if (human.getAge() <= 90) {
+				deathChance = 0.10; // 10% chance for 80-90
+			} else {
+				deathChance = 0.30; // 30% chance for 90+
+			}
+
+			// Random chance to die based on the death chance
+			if (random.nextFloat() < deathChance) {
+				iterator.remove(); // Remove the human if they die
+			}
+		}
 
 		for (Human human : population) {
 			switch (human.getBehavior()) {
