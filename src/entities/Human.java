@@ -118,11 +118,11 @@ public class Human {
 		if (this.neuroticism > 6 && this.openness < 4) {
 			possibleBehaviors.add(Behavior.DECEPTIVE);
 		}
-		
-		if(possibleBehaviors.contains(behavior)) {
+
+		if (possibleBehaviors.contains(behavior)) {
 			return;
 		}
-		
+
 		// Assign behavior randomly from possible behavior, if there are any
 		if (!possibleBehaviors.isEmpty()) {
 			behavior = possibleBehaviors.get(new Random().nextInt(possibleBehaviors.size()));
@@ -179,8 +179,8 @@ public class Human {
 		if (this.socialSkill > 5 && this.conscientiousness > 5) {
 			possibleJobs.add(Job.BUILDER); // Conscientious and social individuals
 		}
-		
-		if(possibleJobs.contains(job)) {
+
+		if (possibleJobs.contains(job)) {
 			return;
 		}
 
@@ -190,6 +190,19 @@ public class Human {
 		} else {
 			job = Job.FARMER; // Default fallback job
 		}
+	}
+
+	public void doJob() {
+		if (job == null) { // Human doesn't have a job
+			return;
+		}
+
+		double salaryEarned = job.doJob(job, this);
+
+		// Round salaryEarned to the nearest integer
+		salaryEarned = Math.round(salaryEarned);
+
+		money += salaryEarned;
 	}
 
 	public void setBehavior(Behavior behavior) {
