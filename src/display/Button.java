@@ -5,8 +5,8 @@ import java.awt.Graphics;
 
 public class Button {
 
-	int x, y, width, height;
-	String text;
+	private int x, y, width, height;
+	private String text;
 
 	public Button(int x, int y, int width, int height, String text) {
 		this.x = x;
@@ -28,18 +28,18 @@ public class Button {
 	}
 
 	public void render(Graphics g) {
-	    g.setColor(Color.white);
-	    g.fillRect(x, y, width, height);
+		g.setColor(Color.white);
+		g.fillRect(x, y, width, height);
 
-	    g.setColor(Color.black);
+		g.setColor(Color.black);
 
-	    // Calculate the position for centered text
-	    int textWidth = g.getFontMetrics().stringWidth(text); // Text width
-	    int textHeight = g.getFontMetrics().getHeight(); // Text height
-	    int textX = x + (width - textWidth) / 2; // Center horizontally
-	    int textY = y + (height + textHeight / 2) / 2; // Center vertically
+		// Calculate the position for centered text
+		int textWidth = g.getFontMetrics().stringWidth(text); // Text width
+		int textHeight = g.getFontMetrics().getHeight(); // Text height
+		int textX = x + (width - textWidth) / 2; // Center horizontally
+		int textY = y + (height + textHeight / 2) / 2; // Center vertically
 
-	    g.drawString(text, textX, textY);
+		g.drawString(text, textX, textY);
 	}
 
 	public int getX() {
