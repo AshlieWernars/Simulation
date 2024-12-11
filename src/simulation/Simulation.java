@@ -15,6 +15,9 @@ public class Simulation extends Thread {
 	private final int populationLimit = 1500;
 	private int generation;
 
+	private int amountOfNewChildren;
+	private int amountOfKilledHumans;
+
 	private int aggressiveCount;
 	private int cooperativeCount;
 	private int neutralCount;
@@ -54,7 +57,7 @@ public class Simulation extends Thread {
 	public Simulation() {
 		this.population = new ArrayList<>();
 		this.generation = 0;
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 50; i++) {
 			population.add(new Human());
 		}
 
@@ -104,6 +107,8 @@ public class Simulation extends Thread {
 
 	public void reset() {
 		this.generation = 0;
+		amountOfNewChildren = 0;
+		amountOfKilledHumans = 0;
 		this.aggressiveCount = 0;
 		this.cooperativeCount = 0;
 		this.neutralCount = 0;
@@ -142,6 +147,8 @@ public class Simulation extends Thread {
 
 	public void simulateGeneration() {
 		generation++;
+		amountOfNewChildren = 0;
+		amountOfKilledHumans = 0;
 		this.aggressiveCount = 0;
 		this.cooperativeCount = 0;
 		this.neutralCount = 0;
@@ -205,6 +212,10 @@ public class Simulation extends Thread {
 		for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
 			Human human = iterator.next();
 			human.ageOneYear();
+			if (human.hadChildDuringSimStep()) {
+				amountOfNewChildren++;
+				human.setHadChildDuringSimStep(false);
+			}
 
 			// Assuming the human's age is already incremented
 			double deathChance = 0;
@@ -225,6 +236,7 @@ public class Simulation extends Thread {
 
 			// Random chance to die based on the death chance
 			if (random.nextFloat() < deathChance) {
+				amountOfKilledHumans++;
 				iterator.remove(); // Remove the human if they die
 			}
 		}
@@ -292,48 +304,39 @@ public class Simulation extends Thread {
 	}
 
 	private void reproduce() {
-		// List to store compatible humans for reproduction
-		List<Human> eligibleMates = new ArrayList<>();
-
 		// Evaluate compatibility based on traits
 		for (int i = 0; i < population.size(); i++) {
 			for (int j = i + 1; j < population.size(); j++) {
+				if (population.size() >= populationLimit) {
+					break;
+				}
+
 				Human parent1 = population.get(i);
 				Human parent2 = population.get(j);
 
-				// Check if the two humans are compatible for reproduction
-				if (areCompatible(parent1, parent2)) {
-					eligibleMates.add(parent1); // Add compatible parents to the list
-					eligibleMates.add(parent2);
+				if (parent1.getAge() < 18 || parent2.getAge() < 18) {
+					continue; // Basic age check
 				}
-			}
-		}
 
-		// Calculate the number of mates to reproduce (half of eligible mates)
-		int numMatesToReproduce = eligibleMates.size() / 2;
+				if (parent1.getAge() > 50 || parent2.getAge() > 50) {
+					continue; // Basic age check
+				}
 
-		// Reproduce using eligible mates
-		for (int i = 0; i < numMatesToReproduce; i++) {
-			Human parent1 = eligibleMates.get(i * 2); // Even index
-			Human parent2 = eligibleMates.get(i * 2 + 1); // Odd index
+				if (parent1.hadChildDuringSimStep() || parent2.hadChildDuringSimStep()) {
+					continue;
+				}
 
-			// Create a child and add to population, but don't exceed the population limit
-			if (population.size() < populationLimit) {
-				Human child = InteractionHandler.reproduce(parent1, parent2);
-				population.add(child); // Add the child to the population
+				// Check if the two humans are compatible for reproduction
+				if (!areCompatible(parent1, parent2)) {
+					continue;
+				}
+
+				population.add(InteractionHandler.reproduce(parent1, parent2));
 			}
 		}
 	}
 
 	private boolean areCompatible(Human parent1, Human parent2) {
-		if (parent1.getAge() < 18 || parent2.getAge() < 18) {
-			return false; // Basic age check
-		}
-		
-		if (parent1.getAge() > 50 || parent2.getAge() > 50) {
-			return false; // Basic age check
-		}
-
 		// Compatibility based on various traits
 		double compatibilityScore = 0;
 
@@ -396,6 +399,8 @@ public class Simulation extends Thread {
 	public void updateStats() {
 		stats = "Generation: " + generation + "\n";
 		stats += "Population Size: " + population.size() + "\n";
+		stats += "Amount of added children: " + (amountOfNewChildren / 2) + "\n";
+		stats += "Amount of killed people: " + (amountOfKilledHumans) + "\n";
 
 		stats += "Aggressive: " + aggressiveCount + "\n";
 		stats += "Cooperative: " + cooperativeCount + "\n";
