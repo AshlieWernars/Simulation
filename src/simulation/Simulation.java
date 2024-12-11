@@ -1,7 +1,6 @@
 package simulation;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -137,7 +136,7 @@ public class Simulation extends Thread {
 		this.totalSocialDominance = 0;
 
 		this.population.clear();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 10; i++) {
 			population.add(new Human());
 		}
 	}
