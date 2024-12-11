@@ -11,6 +11,7 @@ public class SimulationDisplay extends Canvas {
 
 	private static final long serialVersionUID = 1L;
 	private Button startButton;
+	private Button stepButton;
 	private Button stopButton;
 	private Button resetButton;
 	private Simulation simulation;
@@ -28,8 +29,9 @@ public class SimulationDisplay extends Canvas {
 
 		// Create buttons
 		startButton = new Button(25, 50, 100, 40, "Start");
-		stopButton = new Button(25, 100, 100, 40, "Stop");
-		resetButton = new Button(25, 150, 100, 40, "Reset");
+		stepButton = new Button(25, 100, 100, 40, "Step");
+		stopButton = new Button(25, 150, 100, 40, "Stop");
+		resetButton = new Button(25, 200, 100, 40, "Reset");
 
 		run();
 	}
@@ -60,10 +62,21 @@ public class SimulationDisplay extends Canvas {
 			}
 		}
 	}
+	
+	int timer = 0;
 
 	private void update() {
 		if (startButton.isButtonPressed()) {
 			simulation.startSimulation();
+		}
+		
+		if(stepButton.isButtonPressed() && timer == 0) {
+			timer = 60 * 1;
+			simulation.simulateGeneration();
+		}
+		
+		if(timer > 0) {
+			timer--;
 		}
 
 		if (stopButton.isButtonPressed()) {
@@ -89,6 +102,7 @@ public class SimulationDisplay extends Canvas {
 		g.fillRect(0, 0, 1280, 720);
 
 		startButton.render(g);
+		stepButton.render(g);
 		stopButton.render(g);
 		resetButton.render(g);
 
