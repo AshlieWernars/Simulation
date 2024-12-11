@@ -329,6 +329,10 @@ public class Simulation extends Thread {
 		if (parent1.getAge() < 18 || parent2.getAge() < 18) {
 			return false; // Basic age check
 		}
+		
+		if (parent1.getAge() > 50 || parent2.getAge() > 50) {
+			return false; // Basic age check
+		}
 
 		// Compatibility based on various traits
 		double compatibilityScore = 0;
