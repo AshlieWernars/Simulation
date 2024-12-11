@@ -196,13 +196,17 @@ public class Simulation extends Thread {
 			human2.assignJob();
 
 			for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
-				Human human = iterator.next();
-				human.ageOneYear();
-				if (human.getAge() >= 100) {
-					iterator.remove(); // Safely remove the human using the iterator
-				}
+			    Human human = iterator.next();
+			    human.ageOneYear();
+			    
+			    // Calculate death chance based on age
+			    int deathChance = Math.min(1 + human.getAge(), 90); // Start at 1%, increase with age, max 90%
+			    
+			    // Random chance to die based on the death chance
+			    if (random.nextInt(100) < deathChance) {
+			        iterator.remove(); // Remove the human if they die
+			    }
 			}
-
 		}
 
 		// Reproduction (based on traits compatibility)
