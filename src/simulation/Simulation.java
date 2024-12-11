@@ -9,6 +9,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import entities.Human;
+import interaction.InteractionHandler;
 import job.Job;
 
 public class Simulation extends Thread {
@@ -189,7 +190,7 @@ public class Simulation extends Thread {
 			Human human2 = population.get(randomIndex);
 
 			// Humans interact
-			human1.interact(human2);
+			InteractionHandler.interact(human1, human2);
 
 			human1.updateBehaviorBasedOnTraits();
 			human2.updateBehaviorBasedOnTraits();
@@ -316,7 +317,7 @@ public class Simulation extends Thread {
 
 			// Create a child and add to population, but don't exceed the population limit
 			if (population.size() < populationLimit) {
-				Human child = Human.reproduce(parent1, parent2);
+				Human child = InteractionHandler.reproduce(parent1, parent2);
 				population.add(child); // Add the child to the population
 			}
 		}
