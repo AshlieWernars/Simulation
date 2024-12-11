@@ -431,22 +431,6 @@ public class Simulation extends Thread {
 		return stats;
 	}
 
-	public int getGeneration() {
-		return generation;
-	}
-
-	public int getAggressiveCount() {
-		return aggressiveCount;
-	}
-
-	public int getCooperativeCount() {
-		return cooperativeCount;
-	}
-
-	public int getNeutralCount() {
-		return neutralCount;
-	}
-
 	public String getAverageHealth() {
 		return String.format("%.2f", totalHealth / population.size());
 	}
