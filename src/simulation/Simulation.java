@@ -15,7 +15,7 @@ import job.Job;
 public class Simulation extends Thread {
 
 	private List<Human> population;
-	private final int populationLimit = 5000; // Set the population limit to 200
+	private final int populationLimit = 1500;
 	private int generation;
 
 	private int aggressiveCount;
