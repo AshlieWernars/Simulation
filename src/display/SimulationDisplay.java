@@ -92,6 +92,18 @@ public class SimulationDisplay extends Canvas {
 		stopButton.render(g);
 		resetButton.render(g);
 
+		g.setColor(Color.white);
+		String simStats = simulation.getStats();
+		if (simStats != null) {
+			int x = 200, y = 50;
+			int lineHeight = 15;
+
+			for (String line : simStats.split("\n")) {
+				g.drawString(line, x, y);
+				y += lineHeight; // Move down for the next line
+			}
+		}
+
 		bs.show();
 		g.dispose();
 	}
