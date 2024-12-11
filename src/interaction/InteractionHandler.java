@@ -60,20 +60,6 @@ public class InteractionHandler {
 		// Prevent mental health from going negative and ensure it does not exceed 10
 		human1.setMentalHealth(Math.max(0, Math.min(10, human1.getMentalHealth())));
 		human2.setMentalHealth(Math.max(0, Math.min(10, human2.getMentalHealth())));
-
-		// Example: Affecting physical strength or attractiveness after certain
-		// interactions
-		if (human1.getBehavior().equals(Behavior.COOPERATIVE) && human2.getBehavior().equals(Behavior.COOPERATIVE)) {
-			// Cooperation could lead to increased strength through teamwork (example)
-			human1.setPhysicalStrength(Math.min(10, human1.getPhysicalStrength() + 1));
-			human2.setPhysicalStrength(Math.min(10, human2.getPhysicalStrength() + 1));
-		} else if (human1.getBehavior().equals(Behavior.AGGRESSIVE) && human2.getBehavior().equals(Behavior.AGGRESSIVE)) {
-			// Aggressive behaviors could result in a physical decrease after an argument or
-			// fight
-			human1.setPhysicalStrength(Math.max(0, human1.getPhysicalStrength() - 1));
-			human2.setPhysicalStrength(Math.max(0, human2.getPhysicalStrength() - 1));
-		}
-
 	}
 
 	public static void interactAdultAndChild(Human child, Human adult) {
