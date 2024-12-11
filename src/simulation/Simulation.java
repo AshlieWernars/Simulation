@@ -188,6 +188,8 @@ public class Simulation extends Thread {
 
 			human1.updateBehaviorBasedOnTraits();
 			human2.updateBehaviorBasedOnTraits();
+			human1.assignJob();
+			human2.assignJob();
 
 			for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
 				Human human = iterator.next();
@@ -302,6 +304,10 @@ public class Simulation extends Thread {
 
 	// Compatibility check (based on personality traits and health)
 	private boolean areCompatible(Human parent1, Human parent2) {
+		if(parent1.getAge() < 18 || parent2.getAge() < 18) {
+			return false;
+		}
+		
 		// Compatibility based on extroversion, social skill, and mental health
 		int compatibilityScore = Math.abs(parent1.getExtroversion() - parent2.getExtroversion()) + Math.abs(parent1.getSocialSkill() - parent2.getSocialSkill()) + Math.abs(parent1.getMentalHealth() - parent2.getMentalHealth());
 

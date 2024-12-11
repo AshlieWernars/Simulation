@@ -1,8 +1,10 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import behavior.Behavior;
+import job.Job;
 
 public class Human {
 
@@ -30,6 +32,9 @@ public class Human {
 	private int parentalInstinct; // Inclination to care for offspring
 	private int socialDominance; // Desire to lead or control social situations
 
+	private Job job;
+	private int money;
+
 	public Human() {
 		this.age = new Random().nextInt(101); // Random age between 0 and 100
 
@@ -55,6 +60,8 @@ public class Human {
 
 		// Random behavior
 		this.behavior = Behavior.randomBehavior();
+
+		this.job = Job.randomJob();
 
 		this.updateBehaviorBasedOnTraits();
 	}
@@ -109,6 +116,62 @@ public class Human {
 		else {
 			this.behavior = Behavior.NEUTRAL;
 		}
+	}
+
+	public void assignJob() {
+		ArrayList<Job> possibleJobs = new ArrayList<>();
+
+		// Assign job based on traits
+		if (this.socialSkill > 7 && this.extroversion > 6) {
+			possibleJobs.add(Job.MERCHANT); // Social and extroverted
+		}
+
+		if (this.creativity > 7 && this.intelligence > 6) {
+			possibleJobs.add(Job.ARTIST); // Creative and intelligent
+		}
+
+		if (this.socialDominance > 7 && this.conscientiousness > 6) {
+			possibleJobs.add(Job.LEADER); // Strong leadership qualities
+		}
+
+		if (this.physicalStrength > 7 && this.health > 6) {
+			possibleJobs.add(Job.FARMER); // High physical strength and health
+		}
+
+		if (this.intelligence > 7 && this.creativity > 6 && this.openness > 6) {
+			possibleJobs.add(Job.SCIENTIST); // High intellect, creativity, and openness
+		}
+
+		if (this.empathy > 7 && this.mentalHealth > 6) {
+			possibleJobs.add(Job.HEALER); // Empathetic and strong mental health
+		}
+
+		if (this.socialSkill > 6 && this.motivation > 6) {
+			possibleJobs.add(Job.TEACHER); // Motivated and social individuals
+		}
+
+		if (this.physicalStrength > 6 && this.socialDominance > 6) {
+			possibleJobs.add(Job.GUARD); // Strong physical strength and dominance
+		}
+
+		if (this.creativity > 6 && this.intelligence > 6) {
+			possibleJobs.add(Job.HUNTER); // Creative and intelligent individuals
+		}
+
+		if (this.socialSkill > 5 && this.conscientiousness > 5) {
+			possibleJobs.add(Job.BUILDER); // Conscientious and social individuals
+		}
+
+		// Assign job randomly from possible jobs, if there are any
+		if (!possibleJobs.isEmpty()) {
+			job = possibleJobs.get(new Random().nextInt(possibleJobs.size())); // Randomly select a job
+		} else {
+			job = Job.FARMER; // Default fallback job
+		}
+	}
+
+	public Job getJob() {
+		return this.job;
 	}
 
 	public void interact(Human other) {
