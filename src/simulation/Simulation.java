@@ -357,24 +357,33 @@ public class Simulation extends Thread {
 	private double getJobCompatibility(Job job1, Job job2) {
 		double compatibilityScore = 0;
 
-		// Social interaction jobs (Leader, Teacher, Merchant)
-		if ((job1 == Job.LEADER || job1 == Job.TEACHER || job1 == Job.MERCHANT) && (job2 == Job.LEADER || job2 == Job.TEACHER || job2 == Job.MERCHANT)) {
-			compatibilityScore -= 1.0; // Highly compatible if both are social-focused jobs
+		// High paying jobs (maybe take into account what type of person, like if they
+		// are both greedy assholes then they are perfect for eachother)
+		if ((job1 == Job.LEADER || job1 == Job.SCIENTIST) && (job2 == Job.LEADER || job2 == Job.SCIENTIST)) {
+			compatibilityScore -= 1.0; // Highly compatible if both are high paying jobs
 		}
 
-		// Solitary or physical jobs (Farmer, Hunter, Artist, Scientist)
-		if ((job1 == Job.FARMER || job1 == Job.HUNTER || job1 == Job.ARTIST || job1 == Job.SCIENTIST) && (job2 == Job.FARMER || job2 == Job.HUNTER || job2 == Job.ARTIST || job2 == Job.SCIENTIST)) {
-			compatibilityScore -= 0.5; // Solitary or intellectual jobs are more compatible with each other
+		// Physical jobs are more compatible with each other (e.g., Farmer, Hunter)
+		if ((job1 == Job.FARMER || job1 == Job.HUNTER) && (job2 == Job.FARMER || job2 == Job.HUNTER)) {
+			compatibilityScore -= 0.8;
 		}
 
-		// Complementary jobs (e.g., Farmer & Hunter, Leader & Teacher, etc.)
-		if ((job1 == Job.FARMER && job2 == Job.HUNTER) || (job1 == Job.LEADER && job2 == Job.TEACHER)) {
-			compatibilityScore -= 0.8; // Complementary jobs align well with each other
+		// Intellectual/Creative jobs are more compatible with each other
+		if ((job1 == Job.ARTIST || job1 == Job.SCIENTIST) && (job2 == Job.ARTIST || job2 == Job.SCIENTIST)) {
+			compatibilityScore -= 0.8;
 		}
 
-		// Conflicting jobs (e.g., Scientist and Farmer)
-		if ((job1 == Job.SCIENTIST && job2 == Job.FARMER) || (job1 == Job.ARTIST && job2 == Job.GUARD)) {
-			compatibilityScore += 1.0; // Conflict jobs tend to be less compatible
+		// Conflicting jobs (e.g., Hunter and Healer)
+		if ((job1 == Job.SCIENTIST && job2 == Job.FARMER) || (job1 == Job.FARMER && job2 == Job.SCIENTIST)) {
+			compatibilityScore += 0.8;
+		}
+
+		if ((job1 == Job.LEADER && job2 == Job.GUARD) || (job1 == Job.GUARD && job2 == Job.LEADER)) {
+			compatibilityScore += 1.0;
+		}
+
+		if ((job1 == Job.HEALER && job2 == Job.HUNTER) || (job1 == Job.HUNTER && job2 == Job.HEALER)) {
+			compatibilityScore += 1.0;
 		}
 
 		return compatibilityScore;
