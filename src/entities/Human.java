@@ -365,4 +365,8 @@ public class Human {
 	public void setJob(Job job) {
 		this.job = job;
 	}
+
+	public double getMoney() {
+		return money;
+	}
 }
