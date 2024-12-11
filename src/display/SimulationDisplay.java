@@ -1,106 +1,104 @@
 package display;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
+import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 
 import simulation.Simulation;
 
-public class SimulationDisplay {
+public class SimulationDisplay extends Canvas {
 
-	private JFrame frame;
-	private JButton startButton;
-	private JButton stopButton;
-	private JButton resetButton;
-	private JTextArea statsArea;
+	private static final long serialVersionUID = 1L;
+	private Button startButton;
+	private Button stopButton;
+	private Button resetButton;
 	private Simulation simulation;
+
+	Display display;
+	Input input;
 
 	public SimulationDisplay(Simulation simulation) {
 		this.simulation = simulation;
-		frame = new JFrame("Simulation Control");
+
+		input = new Input();
+		this.addMouseListener(input);
+		this.addKeyListener(input);
+		display = new Display(1280, 720, "Simulation", input, this);
 
 		// Create buttons
-		startButton = new JButton("Start");
-		stopButton = new JButton("Stop");
-		resetButton = new JButton("Reset");
+		startButton = new Button(25, 50, 100, 40, "Start");
+		stopButton = new Button(25, 100, 100, 40, "Stop");
+		resetButton = new Button(25, 150, 100, 40, "Reset");
 
-		// Set preferred size for buttons
-		startButton.setPreferredSize(new Dimension(100, 40));
-		stopButton.setPreferredSize(new Dimension(100, 40));
-		resetButton.setPreferredSize(new Dimension(100, 40));
+		run();
+	}
 
-		statsArea = new JTextArea(10, 30);
-		statsArea.setEditable(false);
-		statsArea.setPreferredSize(new Dimension(100, 40));
-		statsArea.setText("Simulation Stats will appear here.");
+	private void run() {
+		long lastime = System.nanoTime();
+		double ns = 1000000000 / 60;
+		double delta = 0;
+		int frames = 0;
+		double time = System.currentTimeMillis();
 
-		// Create panel and add buttons
-		JPanel buttonPanel = new JPanel(new GridLayout(2, 2, 10, 10)); // 2x2 grid layout
-		buttonPanel.add(startButton);
-		buttonPanel.add(stopButton);
-		buttonPanel.add(resetButton);
-		buttonPanel.add(statsArea);
+		while (true) {
+			long now = System.nanoTime();
+			delta += (now - lastime) / ns;
+			lastime = now;
 
-		// Add panel to the frame
-		frame.add(buttonPanel, BorderLayout.CENTER);
+			if (delta >= 1) {
+				update();
+				render();
+				frames++;
+				delta--;
+				if (System.currentTimeMillis() - time >= 1000) {
+					// System.out.println("FPS: " + frames);
+					frames = 0;
+					time = System.currentTimeMillis();
 
-		simulation.setStatsArea(statsArea);
-
-		frame.setSize(500, 300);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
-		// Button Actions
-		startButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				System.out.println("Start");
-				startSimulation();
+				}
 			}
-		});
-
-		stopButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				stopSimulation();
-			}
-		});
-
-		resetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				resetSimulation();
-			}
-		});
-
-		frame.setVisible(true);
+		}
 	}
 
-	private void startSimulation() {
-		simulation.startSimulation();
+	private void update() {
+		if (startButton.isButtonPressed()) {
+			simulation.startSimulation();
+		}
+
+		if (stopButton.isButtonPressed()) {
+			simulation.stopSimulation();
+		}
+
+		if (resetButton.isButtonPressed()) {
+			simulation.reset(); // Reset the simulation state
+			simulation.updateStats(); // Update stats after reset
+		}
 	}
 
-	private void stopSimulation() {
-		simulation.stopSimulation();
+	private void render() {
+		BufferStrategy bs = this.getBufferStrategy();
+		if (bs == null) {
+			this.createBufferStrategy(3);
+			bs = this.getBufferStrategy();
+		}
+
+		Graphics g = bs.getDrawGraphics();
+
+		g.setColor(Color.black);
+		g.fillRect(0, 0, 1280, 720);
+
+		startButton.render(g);
+		stopButton.render(g);
+		resetButton.render(g);
+
+		bs.show();
+		g.dispose();
 	}
 
-	private void resetSimulation() {
-		simulation.reset(); // Reset the simulation state
-		simulation.updateStats(); // Update stats after reset
-	}
-
-	@SuppressWarnings("unused")
 	public static void main(String[] args) {
 		// Assuming you have a Simulation object to pass in
 		Simulation simulation = new Simulation();
-		new SimulationDisplay(simulation);
-
+		new SimulationDisplay(simulation).run();
 	}
 }
