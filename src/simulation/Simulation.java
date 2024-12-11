@@ -175,6 +175,10 @@ public class Simulation extends Thread {
 		for (int i = 0; i < population.size(); i++) {
 			Human human1 = population.get(i);
 
+			if (random.nextInt(10) >= human1.getExtroversion() || random.nextInt(10) >= human1.getSocialSkill()) {
+				continue; // Human interact less based on low extroversion or low social skill
+			}
+
 			// Randomly select a different human for interaction
 			int randomIndex;
 			do {
@@ -304,10 +308,10 @@ public class Simulation extends Thread {
 
 	// Compatibility check (based on personality traits and health)
 	private boolean areCompatible(Human parent1, Human parent2) {
-		if(parent1.getAge() < 18 || parent2.getAge() < 18) {
+		if (parent1.getAge() < 18 || parent2.getAge() < 18) {
 			return false;
 		}
-		
+
 		// Compatibility based on extroversion, social skill, and mental health
 		int compatibilityScore = Math.abs(parent1.getExtroversion() - parent2.getExtroversion()) + Math.abs(parent1.getSocialSkill() - parent2.getSocialSkill()) + Math.abs(parent1.getMentalHealth() - parent2.getMentalHealth());
 
