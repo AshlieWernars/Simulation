@@ -14,7 +14,7 @@ public class Human {
 
 	private int health;
 	private int socialSkill; // How well they interact with others
-	private int physicalStrength; // Physical strength for reproduction
+	private int physicalStrength; // Physical strength
 	private int mentalHealth; // Mental health
 	private int extroversion;
 	private int neuroticism;
