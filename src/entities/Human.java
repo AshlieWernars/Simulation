@@ -75,13 +75,13 @@ public class Human {
 		// Check if at least two conditions are true for aggression
 		// low conscientiousness, low stressResilience, high socialDominance, high
 		// healthRiskTolerance
-		if ((this.conscientiousness < 5 && this.stressResilience < 5) || (this.socialDominance > 7 && this.healthRiskTolerance > 7) || (this.conscientiousness < 5 && this.socialDominance > 7) || (this.stressResilience < 5 && this.healthRiskTolerance > 7)) {
+		if (this.conscientiousness < 5 && this.stressResilience < 5 && this.socialDominance > 7 && this.healthRiskTolerance > 7) {
 			possibleBehaviors.add(Behavior.AGGRESSIVE); // Trigger aggression if at least two conditions are met
 		}
 
 		// Individuals with high empathy, motivation, and parental instinct might behave
 		// in a friendly way
-		if (this.empathy > 6 && this.motivation > 5 && this.parentalInstinct > 6) {
+		if (this.empathy > 6 && this.socialSkill > 7 && this.parentalInstinct > 6) {
 			possibleBehaviors.add(Behavior.FRIENDLY);
 		}
 
@@ -92,18 +92,18 @@ public class Human {
 
 		// Individuals with high stress resilience, conscientiousness, and social
 		// dominance might be more defensive
-		if (this.stressResilience > 6 && this.conscientiousness > 6 && this.socialDominance > 6) {
+		if (this.stressResilience > 6 && this.conscientiousness > 6 && this.socialDominance > 6 && this.physicalStrength > 7) {
 			possibleBehaviors.add(Behavior.DEFENSIVE);
 		}
 
 		// High attractiveness and extroversion can result in a more dominant and
 		// self-interested personality
-		if (this.attractiveness > 7 && this.extroversion > 6) {
+		if (this.attractiveness > 7 && this.extroversion > 6 && this.intelligence < 4) {
 			possibleBehaviors.add(Behavior.GREEDY);
 		}
 
 		// Low social skill and low motivation might result in a lazy behavior
-		if (this.socialSkill < 4 && this.motivation < 3) {
+		if (this.motivation < 4) {
 			possibleBehaviors.add(Behavior.LAZY);
 		}
 
