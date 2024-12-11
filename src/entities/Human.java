@@ -132,7 +132,7 @@ public class Human {
 	}
 
 	public void assignJob() {
-		if (age < 18) { // Person under 18 can't have a job
+		if (age < 18 || age > 65) { // Person under 18 or above 65 can't have a job
 			job = null;
 			return;
 		}
@@ -193,7 +193,13 @@ public class Human {
 	}
 
 	public void doJob() {
-		if (job == null) { // Human doesn't have a job
+		if (age > 65) { // Retired
+			job = null;
+			money += 45;
+			return;
+		}
+
+		if (job == null) { // Lazy bitch is unemployed
 			return;
 		}
 
