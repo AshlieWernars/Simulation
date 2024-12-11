@@ -1,6 +1,7 @@
 package simulation;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
@@ -9,6 +10,7 @@ import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
 import entities.Human;
+import job.Job;
 
 public class Simulation extends Thread {
 
@@ -287,7 +289,6 @@ public class Simulation extends Thread {
 		updateStats();
 	}
 
-	// Handle reproduction based on traits compatibility
 	private void reproduce() {
 		// List to store compatible humans for reproduction
 		List<Human> eligibleMates = new ArrayList<>();
@@ -306,12 +307,10 @@ public class Simulation extends Thread {
 			}
 		}
 
-		// Limit reproduction to the top 50% of compatible humans
-		// In this example, we simply take the first half of the eligible mates for
-		// reproduction
+		// Calculate the number of mates to reproduce (half of eligible mates)
 		int numMatesToReproduce = eligibleMates.size() / 2;
 
-		// Reproduce using the top compatible mates
+		// Reproduce using eligible mates
 		for (int i = 0; i < numMatesToReproduce; i++) {
 			Human parent1 = eligibleMates.get(i * 2); // Even index
 			Human parent2 = eligibleMates.get(i * 2 + 1); // Odd index
@@ -324,17 +323,59 @@ public class Simulation extends Thread {
 		}
 	}
 
-	// Compatibility check (based on personality traits and health)
 	private boolean areCompatible(Human parent1, Human parent2) {
 		if (parent1.getAge() < 18 || parent2.getAge() < 18) {
-			return false;
+			return false; // Basic age check
 		}
 
-		// Compatibility based on extroversion, social skill, and mental health
-		int compatibilityScore = Math.abs(parent1.getExtroversion() - parent2.getExtroversion()) + Math.abs(parent1.getSocialSkill() - parent2.getSocialSkill()) + Math.abs(parent1.getMentalHealth() - parent2.getMentalHealth());
+		// Compatibility based on various traits
+		double compatibilityScore = 0;
 
-		// We assume that a lower score means higher compatibility
-		return compatibilityScore <= 10; // Arbitrary threshold for compatibility
+		// Existing trait compatibility
+		compatibilityScore += Math.abs(parent1.getSocialSkill() - parent2.getSocialSkill()) * 0.2;
+		compatibilityScore += Math.abs(parent1.getPhysicalStrength() - parent2.getPhysicalStrength()) * 0.1;
+		compatibilityScore += Math.abs(parent1.getHealthRiskTolerance() - parent2.getHealthRiskTolerance()) * 0.1;
+		compatibilityScore += Math.abs(parent1.getEmpathy() - parent2.getEmpathy()) * 0.3;
+		compatibilityScore += Math.abs(parent1.getParentalInstinct() - parent2.getParentalInstinct()) * 0.4;
+		compatibilityScore += Math.abs(parent1.getMotivation() - parent2.getMotivation()) * 0.2;
+		compatibilityScore += Math.abs(parent1.getConscientiousness() - parent2.getConscientiousness()) * 0.3;
+		compatibilityScore += Math.abs(parent1.getNeuroticism() - parent2.getNeuroticism()) * 0.5;
+		compatibilityScore += Math.abs(parent1.getIntelligence() - parent2.getIntelligence()) * 0.2;
+		compatibilityScore += Math.abs(parent1.getOpenness() - parent2.getOpenness()) * 0.2;
+
+		// Job compatibility (e.g., matching social vs solitary, complementary jobs)
+		if (parent1.getJob() != null && parent2.getJob() != null) {
+			compatibilityScore += getJobCompatibility(parent1.getJob(), parent2.getJob());
+		}
+
+		// Threshold based on combined trait and job weights
+		return compatibilityScore <= 15; // Adjustable threshold based on combined trait and job differences
+	}
+
+	private double getJobCompatibility(Job job1, Job job2) {
+		double compatibilityScore = 0;
+
+		// Social interaction jobs (Leader, Teacher, Merchant)
+		if ((job1 == Job.LEADER || job1 == Job.TEACHER || job1 == Job.MERCHANT) && (job2 == Job.LEADER || job2 == Job.TEACHER || job2 == Job.MERCHANT)) {
+			compatibilityScore -= 1.0; // Highly compatible if both are social-focused jobs
+		}
+
+		// Solitary or physical jobs (Farmer, Hunter, Artist, Scientist)
+		if ((job1 == Job.FARMER || job1 == Job.HUNTER || job1 == Job.ARTIST || job1 == Job.SCIENTIST) && (job2 == Job.FARMER || job2 == Job.HUNTER || job2 == Job.ARTIST || job2 == Job.SCIENTIST)) {
+			compatibilityScore -= 0.5; // Solitary or intellectual jobs are more compatible with each other
+		}
+
+		// Complementary jobs (e.g., Farmer & Hunter, Leader & Teacher, etc.)
+		if ((job1 == Job.FARMER && job2 == Job.HUNTER) || (job1 == Job.LEADER && job2 == Job.TEACHER)) {
+			compatibilityScore -= 0.8; // Complementary jobs align well with each other
+		}
+
+		// Conflicting jobs (e.g., Scientist and Farmer)
+		if ((job1 == Job.SCIENTIST && job2 == Job.FARMER) || (job1 == Job.ARTIST && job2 == Job.GUARD)) {
+			compatibilityScore += 1.0; // Conflict jobs tend to be less compatible
+		}
+
+		return compatibilityScore;
 	}
 
 	public void updateStats() {
