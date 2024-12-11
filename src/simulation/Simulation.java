@@ -451,72 +451,72 @@ public class Simulation extends Thread {
 		return neutralCount;
 	}
 
-	public double getAverageHealth() {
-		return totalHealth / population.size();
+	public String getAverageHealth() {
+		return String.format("%.2f", totalHealth / population.size());
 	}
 
-	public double getAverageSocialSkill() {
-		return totalSocialSkill / population.size();
+	public String getAverageSocialSkill() {
+		return String.format("%.2f", totalSocialSkill / population.size());
 	}
 
-	public double getAveragePhysicalStrength() {
-		return totalPhysicalStrength / population.size();
+	public String getAveragePhysicalStrength() {
+		return String.format("%.2f", totalPhysicalStrength / population.size());
 	}
 
-	public double getAverageMentalHealth() {
-		return totalMentalHealth / population.size();
+	public String getAverageMentalHealth() {
+		return String.format("%.2f", totalMentalHealth / population.size());
 	}
 
-	public double getAverageExtroversion() {
-		return totalExtroversion / population.size();
+	public String getAverageExtroversion() {
+		return String.format("%.2f", totalExtroversion / population.size());
 	}
 
-	public double getAverageNeuroticism() {
-		return totalNeuroticism / population.size();
+	public String getAverageNeuroticism() {
+		return String.format("%.2f", totalNeuroticism / population.size());
 	}
 
-	public double getAverageOpenness() {
-		return totalOpenness / population.size();
+	public String getAverageOpenness() {
+		return String.format("%.2f", totalOpenness / population.size());
 	}
 
-	public double getAverageIntelligence() {
-		return totalIntelligence / population.size();
+	public String getAverageIntelligence() {
+		return String.format("%.2f", totalIntelligence / population.size());
 	}
 
-	public double getAverageAttractiveness() {
-		return totalAttractiveness / population.size();
+	public String getAverageAttractiveness() {
+		return String.format("%.2f", totalAttractiveness / population.size());
 	}
 
-	public double getAverageEmpathy() {
-		return totalEmpathy / population.size();
+	public String getAverageEmpathy() {
+		return String.format("%.2f", totalEmpathy / population.size());
 	}
 
-	public double getAverageCreativity() {
-		return totalCreativity / population.size();
+	public String getAverageCreativity() {
+		return String.format("%.2f", totalCreativity / population.size());
 	}
 
-	public double getAverageMotivation() {
-		return totalMotivation / population.size();
+	public String getAverageMotivation() {
+		return String.format("%.2f", totalMotivation / population.size());
 	}
 
-	public double getAverageHealthRiskTolerance() {
-		return totalHealthRiskTolerance / population.size();
+	public String getAverageHealthRiskTolerance() {
+		return String.format("%.2f", totalHealthRiskTolerance / population.size());
 	}
 
-	public double getAverageConscientiousness() {
-		return totalConscientiousness / population.size();
+	public String getAverageConscientiousness() {
+		return String.format("%.2f", totalConscientiousness / population.size());
 	}
 
-	public double getAverageStressResilience() {
-		return totalStressResilience / population.size();
+	public String getAverageStressResilience() {
+		return String.format("%.2f", totalStressResilience / population.size());
 	}
 
-	public double getAverageParentalInstinct() {
-		return totalParentalInstinct / population.size();
+	public String getAverageParentalInstinct() {
+		return String.format("%.2f", totalParentalInstinct / population.size());
 	}
 
-	public double getAverageSocialDominance() {
-		return totalSocialDominance / population.size();
+	public String getAverageSocialDominance() {
+		return String.format("%.2f", totalSocialDominance / population.size());
 	}
 
 	public void setStatsArea(JTextArea statsArea) {
