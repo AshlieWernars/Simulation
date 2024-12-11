@@ -62,7 +62,15 @@ public class InteractionHandler {
 			human2.setPhysicalStrength(Math.max(0, human2.getPhysicalStrength() - 1));
 		}
 	}
-	
+
+	/**
+	 * Assumes the parents are of age and compatible for reproduction. Creates a
+	 * child based on the traits of the parents.
+	 * 
+	 * @param parent1 The first parent involved in reproduction.
+	 * @param parent2 The second parent involved in reproduction.
+	 * @return {@code Human} The created child, inheriting traits from both parents.
+	 */
 	public static Human reproduce(Human parent1, Human parent2) {
 		Human child = new Human();
 
@@ -124,25 +132,25 @@ public class InteractionHandler {
 
 		return child;
 	}
-	
-	// Method to apply a small mutation to a trait (between -1 and 1)
-		private static int applyMutation(int traitValue) {
-			Random rand = new Random();
-			// 1% chance to apply mutation (±1)
-			if (rand.nextDouble() < 0.01) {
-				int mutation = rand.nextInt(3) - 1; // Generate -1, 0, or 1
-				traitValue += mutation;
-			}
-			// Ensure the trait stays within the valid range (0-10)
-			return Math.max(0, Math.min(10, traitValue));
-		}
 
-		// New method to mix traits more dynamically (random bias towards one parent)
-		private static int mixTraits(int trait1, int trait2) {
-			Random rand = new Random();
-			if (rand.nextDouble() < 0.5) {
-				return trait1; // Bias towards first parent
-			}
-			return trait2; // Bias towards second parent
+	// Method to apply a small mutation to a trait (between -1 and 1)
+	private static int applyMutation(int traitValue) {
+		Random rand = new Random();
+		// 1% chance to apply mutation (±1)
+		if (rand.nextDouble() < 0.01) {
+			int mutation = rand.nextInt(3) - 1; // Generate -1, 0, or 1
+			traitValue += mutation;
 		}
+		// Ensure the trait stays within the valid range (0-10)
+		return Math.max(0, Math.min(10, traitValue));
+	}
+
+	// New method to mix traits more dynamically (random bias towards one parent)
+	private static int mixTraits(int trait1, int trait2) {
+		Random rand = new Random();
+		if (rand.nextDouble() < 0.5) {
+			return trait1; // Bias towards first parent
+		}
+		return trait2; // Bias towards second parent
+	}
 }
