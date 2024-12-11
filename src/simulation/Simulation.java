@@ -5,9 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.JTextArea;
-import javax.swing.SwingUtilities;
-
 import entities.Human;
 import interaction.InteractionHandler;
 import job.Job;
@@ -47,11 +44,11 @@ public class Simulation extends Thread {
 	private double totalStressResilience;
 	private double totalParentalInstinct;
 	private double totalSocialDominance;
+	private double totalMoney;
 
 	private boolean isRunning;
 	private boolean hasStarted;
 	private String stats;
-	private JTextArea statsArea;
 	Random random = new Random();
 
 	public Simulation() {
@@ -135,6 +132,7 @@ public class Simulation extends Thread {
 		this.totalStressResilience = 0;
 		this.totalParentalInstinct = 0;
 		this.totalSocialDominance = 0;
+		this.totalMoney = 0;
 
 		this.population.clear();
 		for (int i = 0; i < 10; i++) {
@@ -172,6 +170,7 @@ public class Simulation extends Thread {
 		this.totalStressResilience = 0;
 		this.totalParentalInstinct = 0;
 		this.totalSocialDominance = 0;
+		this.totalMoney = 0;
 
 		// Humans interact with each other
 		for (int i = 0; i < population.size(); i++) {
@@ -286,6 +285,7 @@ public class Simulation extends Thread {
 			totalStressResilience += human.getStressResilience();
 			totalParentalInstinct += human.getParentalInstinct();
 			totalSocialDominance += human.getSocialDominance();
+			totalMoney += human.getMoney();
 		}
 
 		updateStats();
@@ -422,11 +422,7 @@ public class Simulation extends Thread {
 		stats += "Average Stress Resilience: " + getAverageStressResilience() + "\n";
 		stats += "Average Parental Instinct: " + getAverageParentalInstinct() + "\n";
 		stats += "Average Social Dominance: " + getAverageSocialDominance() + "\n";
-
-		if (statsArea != null) {
-			// Safely update the statsArea in the event dispatch thread
-			SwingUtilities.invokeLater(() -> statsArea.setText(stats));
-		}
+		stats += "Average Money: " + getAverageMoney() + "\n";
 
 		System.out.println(stats);
 	}
@@ -519,7 +515,7 @@ public class Simulation extends Thread {
 		return String.format("%.2f", totalSocialDominance / population.size());
 	}
 
-	public void setStatsArea(JTextArea statsArea) {
-		this.statsArea = statsArea;
+	public String getAverageMoney() {
+		return String.format("%.2f", totalMoney / population.size());
 	}
 }
