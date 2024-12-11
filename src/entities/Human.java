@@ -37,25 +37,25 @@ public class Human {
 	public Human() {
 		this.age = new Random().nextInt(101); // Random age between 0 and 100
 
-		this.health = 5 + new Random().nextInt(6); // Random health between 5 and 10
-		this.socialSkill = 5 + new Random().nextInt(6); // Random social skill between 5 and 10
-		this.physicalStrength = 5 + new Random().nextInt(6); // Random physical strength between 5 and 10
-		this.mentalHealth = 5 + new Random().nextInt(6); // Random mental health between 5 and 10
-		this.extroversion = 5 + new Random().nextInt(6); // Random extroversion between 5 and 10
-		this.neuroticism = 5 + new Random().nextInt(6); // Random neuroticism between 5 and 10
-		this.openness = 5 + new Random().nextInt(6); // Random openness between 5 and 10
+		this.health = new Random().nextInt(11); // Random health between 0 and 10
+		this.socialSkill = new Random().nextInt(11); // Random social skill between 0 and 10
+		this.physicalStrength = new Random().nextInt(11); // Random physical strength between 0 and 10
+		this.mentalHealth = new Random().nextInt(11); // Random mental health between 0 and 10
+		this.extroversion = new Random().nextInt(11); // Random extroversion between 0 and 10
+		this.neuroticism = new Random().nextInt(11); // Random neuroticism between 0 and 10
+		this.openness = new Random().nextInt(11); // Random openness between 0 and 10
 
-		// Additional traits with random values between 5 and 10
-		this.intelligence = 5 + new Random().nextInt(6); // Random intelligence between 5 and 10
-		this.attractiveness = 5 + new Random().nextInt(6); // Random attractiveness between 5 and 10
-		this.empathy = 5 + new Random().nextInt(6); // Random empathy between 5 and 10
-		this.creativity = 5 + new Random().nextInt(6); // Random creativity between 5 and 10
-		this.motivation = 5 + new Random().nextInt(6); // Random motivation between 5 and 10
-		this.healthRiskTolerance = 5 + new Random().nextInt(6); // Random health risk tolerance between 5 and 10
-		this.conscientiousness = 5 + new Random().nextInt(6); // Random conscientiousness between 5 and 10
-		this.stressResilience = 5 + new Random().nextInt(6); // Random stress resilience between 5 and 10
-		this.parentalInstinct = 5 + new Random().nextInt(6); // Random parental instinct between 5 and 10
-		this.socialDominance = 5 + new Random().nextInt(6); // Random social dominance between 5 and 10
+		// Additional traits with random values between 0 and 10
+		this.intelligence = new Random().nextInt(11); // Random intelligence between 0 and 10
+		this.attractiveness = new Random().nextInt(11); // Random attractiveness between 0 and 10
+		this.empathy = new Random().nextInt(11); // Random empathy between 0 and 10
+		this.creativity = new Random().nextInt(11); // Random creativity between 0 and 10
+		this.motivation = new Random().nextInt(11); // Random motivation between 0 and 10
+		this.healthRiskTolerance = new Random().nextInt(11); // Random health risk tolerance between 0 and 10
+		this.conscientiousness = new Random().nextInt(11); // Random conscientiousness between 0 and 10
+		this.stressResilience = new Random().nextInt(11); // Random stress resilience between 0 and 10
+		this.parentalInstinct = new Random().nextInt(11); // Random parental instinct between 0 and 10
+		this.socialDominance = new Random().nextInt(11); // Random social dominance between 0 and 10
 
 		this.job = Job.randomJob();
 
