@@ -20,6 +20,8 @@ public class Simulation extends Thread {
 	private int amountOfNewChildren;
 	private int amountOfKilledHumans;
 
+	private int amountOfChildren;
+
 	private int aggressiveCount;
 	private int cooperativeCount;
 	private int neutralCount;
@@ -71,7 +73,7 @@ public class Simulation extends Thread {
 		this.population = new ArrayList<>();
 		this.generation = 0;
 		for (int i = 0; i < 50; i++) {
-			population.add(new Human());
+			population.add(new Human(false));
 		}
 
 		this.isRunning = false;
@@ -120,8 +122,9 @@ public class Simulation extends Thread {
 
 	public void reset() {
 		this.generation = 0;
-		amountOfNewChildren = 0;
-		amountOfKilledHumans = 0;
+		this.amountOfNewChildren = 0;
+		this.amountOfKilledHumans = 0;
+		this.amountOfChildren = 0;
 		this.aggressiveCount = 0;
 		this.cooperativeCount = 0;
 		this.neutralCount = 0;
@@ -157,14 +160,15 @@ public class Simulation extends Thread {
 
 		this.population.clear();
 		for (int i = 0; i < 10; i++) {
-			population.add(new Human());
+			population.add(new Human(false));
 		}
 	}
 
 	public void simulateGeneration() {
-		generation++;
-		amountOfNewChildren = 0;
-		amountOfKilledHumans = 0;
+		this.generation++;
+		this.amountOfNewChildren = 0;
+		this.amountOfKilledHumans = 0;
+		this.amountOfChildren = 0;
 		this.aggressiveCount = 0;
 		this.cooperativeCount = 0;
 		this.neutralCount = 0;
@@ -238,6 +242,7 @@ public class Simulation extends Thread {
 				break;
 			case 3:
 				// Too young
+				amountOfChildren++;
 				break;
 			default:
 				throw new RuntimeException("Unkown Job Status");
@@ -464,6 +469,7 @@ public class Simulation extends Thread {
 		stats += "Population Size: " + population.size() + "\n";
 		stats += "Amount of added children: " + (amountOfNewChildren / 2) + "\n";
 		stats += "Amount of killed people: " + (amountOfKilledHumans) + "\n";
+		stats += "Amount of children: " + (amountOfChildren) + "\n";
 
 		stats += "Aggressive: " + aggressiveCount + "\n";
 		stats += "Cooperative: " + cooperativeCount + "\n";

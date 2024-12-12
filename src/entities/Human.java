@@ -39,29 +39,39 @@ public class Human {
 
 	private final String name;
 
-	public Human() {
-		this.age = new Random().nextInt(101); // Random age between 0 and 100
-		name = NameLoader.getRandomName(new Random().nextInt(2));
+	private Human parent1;
+	private Human parent2;
+	private final ArrayList<Human> children = new ArrayList<>();
+	private final Random random = new Random();
 
-		this.health = new Random().nextInt(11); // Random health between 0 and 10
-		this.socialSkill = new Random().nextInt(11); // Random social skill between 0 and 10
-		this.physicalStrength = new Random().nextInt(11); // Random physical strength between 0 and 10
-		this.mentalHealth = new Random().nextInt(11); // Random mental health between 0 and 10
-		this.extroversion = new Random().nextInt(11); // Random extroversion between 0 and 10
-		this.neuroticism = new Random().nextInt(11); // Random neuroticism between 0 and 10
-		this.openness = new Random().nextInt(11); // Random openness between 0 and 10
+	public Human(boolean isChild) {
+		name = NameLoader.getRandomName(random.nextInt(2));
+
+		if (isChild) {
+			return;
+		}
+
+		this.age = random.nextInt(101); // Random age between 0 and 100
+
+		this.health = random.nextInt(11); // Random health between 0 and 10
+		this.socialSkill = random.nextInt(11); // Random social skill between 0 and 10
+		this.physicalStrength = random.nextInt(11); // Random physical strength between 0 and 10
+		this.mentalHealth = random.nextInt(11); // Random mental health between 0 and 10
+		this.extroversion = random.nextInt(11); // Random extroversion between 0 and 10
+		this.neuroticism = random.nextInt(11); // Random neuroticism between 0 and 10
+		this.openness = random.nextInt(11); // Random openness between 0 and 10
 
 		// Additional traits with random values between 0 and 10
-		this.intelligence = new Random().nextInt(11); // Random intelligence between 0 and 10
-		this.attractiveness = new Random().nextInt(11); // Random attractiveness between 0 and 10
-		this.empathy = new Random().nextInt(11); // Random empathy between 0 and 10
-		this.creativity = new Random().nextInt(11); // Random creativity between 0 and 10
-		this.motivation = new Random().nextInt(11); // Random motivation between 0 and 10
-		this.healthRiskTolerance = new Random().nextInt(11); // Random health risk tolerance between 0 and 10
-		this.conscientiousness = new Random().nextInt(11); // Random conscientiousness between 0 and 10
-		this.stressResilience = new Random().nextInt(11); // Random stress resilience between 0 and 10
-		this.parentalInstinct = new Random().nextInt(11); // Random parental instinct between 0 and 10
-		this.socialDominance = new Random().nextInt(11); // Random social dominance between 0 and 10
+		this.intelligence = random.nextInt(11); // Random intelligence between 0 and 10
+		this.attractiveness = random.nextInt(11); // Random attractiveness between 0 and 10
+		this.empathy = random.nextInt(11); // Random empathy between 0 and 10
+		this.creativity = random.nextInt(11); // Random creativity between 0 and 10
+		this.motivation = random.nextInt(11); // Random motivation between 0 and 10
+		this.healthRiskTolerance = random.nextInt(11); // Random health risk tolerance between 0 and 10
+		this.conscientiousness = random.nextInt(11); // Random conscientiousness between 0 and 10
+		this.stressResilience = random.nextInt(11); // Random stress resilience between 0 and 10
+		this.parentalInstinct = random.nextInt(11); // Random parental instinct between 0 and 10
+		this.socialDominance = random.nextInt(11); // Random social dominance between 0 and 10
 
 		this.job = Job.randomJob();
 
@@ -131,7 +141,7 @@ public class Human {
 
 		// Assign behavior randomly from possible behavior, if there are any
 		if (!possibleBehaviors.isEmpty()) {
-			behavior = possibleBehaviors.get(new Random().nextInt(possibleBehaviors.size()));
+			behavior = possibleBehaviors.get(random.nextInt(possibleBehaviors.size()));
 		} else {
 			behavior = Behavior.NEUTRAL;
 		}
@@ -192,7 +202,7 @@ public class Human {
 
 		// Assign job randomly from possible jobs, if there are any
 		if (!possibleJobs.isEmpty()) {
-			job = possibleJobs.get(new Random().nextInt(possibleJobs.size())); // Randomly select a job
+			job = possibleJobs.get(random.nextInt(possibleJobs.size())); // Randomly select a job
 		} else {
 			job = null; // Unemployed
 		}
@@ -223,6 +233,58 @@ public class Human {
 		money += (int) Math.round(salaryEarned);
 
 		return 0;
+	}
+
+	public void die() {
+		if (this.parent1 != null) {
+			this.parent1.removeChild(this);
+		}
+
+		if (this.parent2 != null) {
+			this.parent2.removeChild(this);
+		}
+
+		// Case where the person has no children
+		if (children.isEmpty()) {
+			if (parent1 != null && parent2 != null) {
+				// Split money between both parents
+				parent1.addMoney(money / 2);
+				parent2.addMoney(money / 2);
+			} else if (parent1 != null) {
+				// Give all money to parent1
+				parent1.addMoney(money);
+			} else if (parent2 != null) {
+				// Give all money to parent2
+				parent2.addMoney(money);
+			} else {
+				// Give money to the state (implement state logic as needed)
+				// state.addMoney(money);
+				throw new RuntimeException(this.getName() + " " + this.getAge() + " " + this.getMoney());
+			}
+			return; // No need to proceed further if no children
+		}
+
+		// Case where the person has children, distribute money to them
+		double amountOfChildren = this.children.size();
+		int amountOfMoneyPerChild = (int) Math.round(money / amountOfChildren);
+
+		for (Human child : children) {
+			child.addMoney(amountOfMoneyPerChild);
+
+			// Remove parent references from children
+			if (child.getParent1() == this) {
+				child.setParent1(null);
+			}
+
+			if (child.getParent2() == this) {
+				child.setParent2(null);
+			}
+		}
+	}
+
+	private void addMoney(int amountOfMoney) {
+		money += amountOfMoney;
+		money = Math.max(0, money); // Prevent money from going below zero
 	}
 
 	public void setBehavior(Behavior behavior) {
@@ -403,5 +465,33 @@ public class Human {
 
 	public String getName() {
 		return name;
+	}
+
+	public void setParent1(Human parent1) {
+		this.parent1 = parent1;
+	}
+
+	public Human getParent1() {
+		return parent1;
+	}
+
+	public void setParent2(Human parent2) {
+		this.parent2 = parent2;
+	}
+
+	public Human getParent2() {
+		return parent2;
+	}
+
+	public ArrayList<Human> getChildren() {
+		return children;
+	}
+
+	public void addChild(Human child) {
+		this.children.add(child);
+	}
+
+	public void removeChild(Human child) {
+		this.children.remove(child);
 	}
 }

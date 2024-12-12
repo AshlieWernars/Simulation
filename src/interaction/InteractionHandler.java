@@ -92,7 +92,7 @@ public class InteractionHandler {
 	 * @return {@code Human} The created child, inheriting traits from both parents.
 	 */
 	public static Human reproduce(Human parent1, Human parent2) {
-		Human child = new Human();
+		Human child = new Human(true);
 
 		child.setAge(0);
 		child.setJob(null);
@@ -149,7 +149,12 @@ public class InteractionHandler {
 		child.setSocialDominance(applyMutation(child.getSocialDominance())); // Apply mutation to social dominance
 
 		child.updateBehaviorBasedOnTraits();
-		
+
+		child.setParent1(parent1);
+		child.setParent2(parent2);
+
+		parent1.addChild(child);
+
 		parent1.setHadChildDuringSimStep(true);
 		parent2.setHadChildDuringSimStep(true);
 
