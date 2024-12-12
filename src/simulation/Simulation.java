@@ -12,7 +12,7 @@ import job.Job;
 public class Simulation extends Thread {
 
 	private List<Human> population;
-	private final int populationLimit = 1500;
+	private final int populationLimit = 1000000;
 	private int generation;
 
 	private int amountOfNewChildren;
@@ -217,7 +217,7 @@ public class Simulation extends Thread {
 				human.setHadChildDuringSimStep(false);
 			}
 
-			// Assuming the human's age is already incremented
+			// Base death chance based on age
 			double deathChance = 0;
 
 			if (human.getAge() <= 1) {
@@ -234,7 +234,13 @@ public class Simulation extends Thread {
 				deathChance = 0.30; // 30% chance for 90+
 			}
 
-			// Random chance to die based on the death chance
+			// Adjust death chance based on health
+			if (human.getHealth() < 5) {
+				double healthFactor = (5 - human.getHealth()) / 5.0; // Scales between 0 and 1
+				deathChance += deathChance * healthFactor; // Increases death chance proportionally
+			}
+
+			// Random chance to die based on the adjusted death chance
 			if (random.nextFloat() < deathChance) {
 				amountOfKilledHumans++;
 				iterator.remove(); // Remove the human if they die
