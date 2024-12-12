@@ -5,6 +5,7 @@ import java.util.Random;
 
 import behavior.Behavior;
 import job.Job;
+import names.NameLoader;
 
 public class Human {
 
@@ -36,8 +37,11 @@ public class Human {
 
 	private boolean hadChildDuringSimStep = false;
 
+	private final String name;
+
 	public Human() {
 		this.age = new Random().nextInt(101); // Random age between 0 and 100
+		name = NameLoader.getRandomName(new Random().nextInt(2));
 
 		this.health = new Random().nextInt(11); // Random health between 0 and 10
 		this.socialSkill = new Random().nextInt(11); // Random social skill between 0 and 10
@@ -395,5 +399,9 @@ public class Human {
 
 	public void setHadChildDuringSimStep(boolean hadChildDuringSimStep) {
 		this.hadChildDuringSimStep = hadChildDuringSimStep;
+	}
+
+	public String getName() {
+		return name;
 	}
 }
