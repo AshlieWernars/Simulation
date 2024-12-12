@@ -1,5 +1,6 @@
 package simulation;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -8,6 +9,7 @@ import java.util.Random;
 import entities.Human;
 import interaction.InteractionHandler;
 import job.Job;
+import names.NameLoader;
 
 public class Simulation extends Thread {
 
@@ -60,6 +62,12 @@ public class Simulation extends Thread {
 	Random random = new Random();
 
 	public Simulation() {
+		try {
+			NameLoader.loadNames("names.txt");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 		this.population = new ArrayList<>();
 		this.generation = 0;
 		for (int i = 0; i < 50; i++) {
@@ -492,7 +500,7 @@ public class Simulation extends Thread {
 		stats += "Unemployed People: " + unemployedPeople + "\n";
 		stats += "Retired People: " + retiredPeople + "\n";
 
-		stats += "Richest Person: " + richestPerson + "\n";
+		stats += "Richest Person: " + richestPerson.getName() + "\n";
 		stats += "Current wealth of the richest person: " + richestPerson.getMoney() + "\n";
 
 		System.out.println(stats);
