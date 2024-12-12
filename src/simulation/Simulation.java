@@ -304,25 +304,34 @@ public class Simulation extends Thread {
 	}
 
 	private void reproduce() {
-		// Evaluate compatibility based on traits
 		for (int i = 0; i < population.size(); i++) {
-			for (int j = i + 1; j < population.size(); j++) {
-				if (population.size() >= populationLimit) {
-					break;
-				}
+			if (population.size() >= populationLimit) {
+				break;
+			}
 
-				Human parent1 = population.get(i);
-				Human parent2 = population.get(j);
+			Human parent1 = population.get(i);
 
-				if (parent1.getAge() < 18 || parent2.getAge() < 18) {
+			if (parent1.getAge() < 18 || parent1.getAge() > 50) {
+				continue; // Basic age check
+			}
+
+			if (parent1.hadChildDuringSimStep()) {
+				continue;
+			}
+
+			for (int attempts = 0; attempts < 5; attempts++) { // Limit to 5 random picks
+				int randomIndex;
+				do {
+					randomIndex = random.nextInt(population.size());
+				} while (randomIndex == i); // Ensure it's not the same human
+
+				Human parent2 = population.get(randomIndex);
+
+				if (parent2.getAge() < 18 || parent2.getAge() > 50) {
 					continue; // Basic age check
 				}
 
-				if (parent1.getAge() > 50 || parent2.getAge() > 50) {
-					continue; // Basic age check
-				}
-
-				if (parent1.hadChildDuringSimStep() || parent2.hadChildDuringSimStep()) {
+				if (parent2.hadChildDuringSimStep()) {
 					continue;
 				}
 
@@ -332,8 +341,10 @@ public class Simulation extends Thread {
 				}
 
 				population.add(InteractionHandler.reproduce(parent1, parent2));
+				break; // Once reproduction happens, stop trying for parent1 in this step
 			}
 		}
+
 	}
 
 	private boolean areCompatible(Human parent1, Human parent2) {
