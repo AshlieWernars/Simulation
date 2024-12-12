@@ -255,6 +255,8 @@ public class Simulation extends Thread {
 					richestPerson = human1;
 				}
 			}
+
+			human1.payHealthInsurance();
 		}
 
 		// Reproduction (based on traits compatibility)

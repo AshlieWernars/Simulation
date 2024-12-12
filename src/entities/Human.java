@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import behavior.Behavior;
+import insurance.HealthInsurance;
 import job.Job;
 import names.NameLoader;
 
@@ -233,6 +234,17 @@ public class Human {
 		money += (int) Math.round(salaryEarned);
 
 		return 0;
+	}
+
+	public void payHealthInsurance() {
+		int healthInsuranceCost = HealthInsurance.calculateHealthInsuranceCost(this);
+
+		if (money - healthInsuranceCost < 0) {
+			// Human can't afford the insurance
+			return;
+		}
+
+		money -= healthInsuranceCost;
 	}
 
 	public void die() {
