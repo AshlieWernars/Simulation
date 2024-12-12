@@ -33,7 +33,7 @@ public class Human {
 	private int stressResilience; // Ability to handle stress
 	private int parentalInstinct; // Inclination to care for offspring
 	private int socialDominance; // Desire to lead or control social situations
-	
+
 	private boolean hadChildDuringSimStep = false;
 
 	public Human() {
@@ -190,24 +190,35 @@ public class Human {
 		if (!possibleJobs.isEmpty()) {
 			job = possibleJobs.get(new Random().nextInt(possibleJobs.size())); // Randomly select a job
 		} else {
-			job = Job.FARMER; // Default fallback job
+			job = null; // Unemployed
 		}
 	}
 
-	public void doJob() {
+	/**
+	 * 
+	 * @return 0 if job done, 1 if no job, 2 if retired, 3 if too young
+	 */
+	public int tryToDoJob() {
 		if (age > 65) { // Retired
 			job = null;
 			money += 45;
-			return;
+			return 2;
+		}
+
+		if (age < 18) { // Too young
+			job = null;
+			return 3;
 		}
 
 		if (job == null) { // Lazy bitch is unemployed
-			return;
+			return 1;
 		}
 
 		double salaryEarned = job.doJob(job, this);
 
 		money += (int) Math.round(salaryEarned);
+
+		return 0;
 	}
 
 	public void setBehavior(Behavior behavior) {

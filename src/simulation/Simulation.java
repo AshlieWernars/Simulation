@@ -12,7 +12,7 @@ import job.Job;
 public class Simulation extends Thread {
 
 	private List<Human> population;
-	private final int populationLimit = 1000000;
+	private final int populationLimit = 10000;
 	private int generation;
 
 	private int amountOfNewChildren;
@@ -48,6 +48,11 @@ public class Simulation extends Thread {
 	private double totalParentalInstinct;
 	private double totalSocialDominance;
 	private double totalMoney;
+
+	private int unemployedPeople;
+	private int retiredPeople;
+
+	private Human richestPerson;
 
 	private boolean isRunning;
 	private boolean hasStarted;
@@ -138,6 +143,9 @@ public class Simulation extends Thread {
 		this.totalParentalInstinct = 0;
 		this.totalSocialDominance = 0;
 		this.totalMoney = 0;
+		this.unemployedPeople = 0;
+		this.retiredPeople = 0;
+		this.richestPerson = null;
 
 		this.population.clear();
 		for (int i = 0; i < 10; i++) {
@@ -178,6 +186,9 @@ public class Simulation extends Thread {
 		this.totalParentalInstinct = 0;
 		this.totalSocialDominance = 0;
 		this.totalMoney = 0;
+		this.unemployedPeople = 0;
+		this.retiredPeople = 0;
+		this.richestPerson = null;
 
 		// Humans interact with each other
 		for (int i = 0; i < population.size(); i++) {
@@ -203,7 +214,34 @@ public class Simulation extends Thread {
 			human1.assignJob();
 			human2.assignJob();
 
-			human1.doJob();
+			int jobStatus = human1.tryToDoJob();
+
+			switch (jobStatus) {
+			case 0:
+				// They did their job
+				break;
+			case 1:
+				unemployedPeople++;
+				// They are unemployed
+				break;
+			case 2:
+				// Retired
+				retiredPeople++;
+				break;
+			case 3:
+				// Too young
+				break;
+			default:
+				throw new RuntimeException("Unkown Job Status");
+			}
+
+			if (richestPerson == null) {
+				richestPerson = human1;
+			} else {
+				if (richestPerson.getMoney() < human1.getMoney()) {
+					richestPerson = human1;
+				}
+			}
 		}
 
 		// Reproduction (based on traits compatibility)
@@ -450,6 +488,12 @@ public class Simulation extends Thread {
 		stats += "Average Parental Instinct: " + getAverageParentalInstinct() + "\n";
 		stats += "Average Social Dominance: " + getAverageSocialDominance() + "\n";
 		stats += "Average Money: " + getAverageMoney() + "\n";
+
+		stats += "Unemployed People: " + unemployedPeople + "\n";
+		stats += "Retired People: " + retiredPeople + "\n";
+
+		stats += "Richest Person: " + richestPerson + "\n";
+		stats += "Current wealth of the richest person: " + richestPerson.getMoney() + "\n";
 
 		System.out.println(stats);
 	}
