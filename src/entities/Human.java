@@ -221,7 +221,6 @@ public class Human {
 	public int tryToDoJob() {
 		if (age > 65) { // Retired
 			job = null;
-			money += 45;
 			return 2;
 		}
 
@@ -241,6 +240,12 @@ public class Human {
 
 	public void recieveSalary() {
 		lastSalary = 0;
+		
+		if(age > 65) {
+			money += 1350;
+			job = null;
+			return;
+		}
 
 		if (job == null) { // Unemployed, will add welfare in the future
 			return;
