@@ -17,7 +17,7 @@ public class Simulation extends Thread {
 
 	private List<Human> population;
 	private final int populationLimit = 50;
-	private int generation;
+	private int day;
 
 	private boolean isRunning;
 	private boolean hasStarted;
@@ -34,7 +34,7 @@ public class Simulation extends Thread {
 		}
 
 		this.population = new ArrayList<>();
-		this.generation = 0;
+		this.day = 0;
 		for (int i = 0; i < 50; i++) {
 			population.add(new Human(false));
 		}
@@ -72,7 +72,7 @@ public class Simulation extends Thread {
 				}
 			}
 
-			simulateGeneration();
+			simulateDay();
 
 			try {
 				Thread.sleep(10); // Sleep for 1 second between generations
@@ -84,7 +84,7 @@ public class Simulation extends Thread {
 	}
 
 	public void reset() {
-		this.generation = 0;
+		this.day = 0;
 		StatsTracker.fullReset();
 
 		this.population.clear();
@@ -93,8 +93,8 @@ public class Simulation extends Thread {
 		}
 	}
 
-	public void simulateGeneration() {
-		this.generation++;
+	public void simulateDay() {
+		this.day++;
 		StatsTracker.reset();
 
 		// Humans interact with each other
@@ -160,6 +160,10 @@ public class Simulation extends Thread {
 			}
 		}
 
+		if (this.day % 28 == 0) {
+			runMonth(); // Run your code here
+		}
+
 		HousingSystem.update();
 
 		// Reproduction (based on traits compatibility)
@@ -204,7 +208,7 @@ public class Simulation extends Thread {
 			}
 		}
 
-		StatsTracker.track(population, generation);
+		StatsTracker.track(population, day);
 	}
 
 	private void reproduce() {
@@ -248,5 +252,10 @@ public class Simulation extends Thread {
 				break; // Once reproduction happens, stop trying for parent1 in this step
 			}
 		}
+	}
+
+	// Code to run every 28 days
+	private void runMonth() {
+		System.out.println("28 days have passed! Running scheduled task.");
 	}
 }

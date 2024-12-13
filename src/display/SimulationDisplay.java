@@ -74,7 +74,7 @@ public class SimulationDisplay extends Canvas {
 
 		if (stepButton.isButtonPressed() && timer == 0) {
 			timer = 60 * 1;
-			simulation.simulateGeneration();
+			simulation.simulateDay();
 		}
 
 		if (timer > 0) {
