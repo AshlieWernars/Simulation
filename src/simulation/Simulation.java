@@ -130,24 +130,25 @@ public class Simulation extends Thread {
 				continue;
 			}
 
-			for (House house : HousingSystem.getHouses()) {
-				if (house.isFull()) {
-					continue;
-				}
+			int i = 0;
+			do {
+				i = random.nextInt(HousingSystem.getHouses().size());
+			} while (HousingSystem.getHouses().get(i).isFull());
 
-				// if (house.getPricePerMonthPerPerson() > human.getLastSalary()) {
-				/*
-				 * System.err.println(house.getPricePerMonthPerPerson()); if
-				 * (human.getLastSalary() == 0 && human.getJob() != null) { throw new
-				 * RuntimeException(human.getMoney() + ""); }
-				 * System.err.println(human.getLastSalary());
-				 * System.err.println("------------");
-				 */
-				// continue; // House is too expensive
-				// }
+			House house = HousingSystem.getHouses().get(i);
 
-				house.addResident(human);
-			}
+			// if (house.getPricePerMonthPerPerson() > human.getLastSalary()) {
+			/*
+			 * System.err.println(house.getPricePerMonthPerPerson()); if
+			 * (human.getLastSalary() == 0 && human.getJob() != null) { throw new
+			 * RuntimeException(human.getMoney() + ""); }
+			 * System.err.println(human.getLastSalary());
+			 * System.err.println("------------");
+			 */
+			// continue; // House is too expensive
+			// }
+
+			house.addResident(human);
 		}
 
 		// Reproduction (based on traits compatibility)
