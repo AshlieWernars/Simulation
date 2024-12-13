@@ -17,6 +17,9 @@ public class InteractionHandler {
 		} else if (human1.getAge() > 18 && human2.getAge() > 18) {
 			interactAdultAndAdult(human1, human2);
 		}
+
+		human1.updateBehaviorBasedOnTraits();
+		human2.updateBehaviorBasedOnTraits();
 	}
 
 	private static void interactAdultAndAdult(Human human1, Human human2) {

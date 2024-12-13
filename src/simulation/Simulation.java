@@ -99,9 +99,9 @@ public class Simulation extends Thread {
 
 		// Humans interact with each other
 		for (int i = 0; i < population.size(); i++) {
-			Human human1 = population.get(i);
+			Human human = population.get(i);
 
-			if (random.nextInt(10) >= human1.getExtroversion() || random.nextInt(10) >= human1.getSocialSkill()) {
+			if (random.nextInt(10) >= human.getExtroversion() || random.nextInt(10) >= human.getSocialSkill()) {
 				continue; // Human interact less based on low extroversion or low social skill
 			}
 
@@ -114,34 +114,9 @@ public class Simulation extends Thread {
 			Human human2 = population.get(randomIndex);
 
 			// Humans interact
-			InteractionHandler.interact(human1, human2);
+			InteractionHandler.interact(human, human2);
 
-			human1.updateBehaviorBasedOnTraits();
-			human2.updateBehaviorBasedOnTraits();
-			human1.assignJob();
-			human2.assignJob();
-
-			int jobStatus = human1.tryToDoJob();
-
-			switch (jobStatus) {
-			case 0:
-				// They did their job
-				break;
-			case 1:
-				StatsTracker.unemployedPeople++;
-				// They are unemployed
-				break;
-			case 2:
-				// Retired
-				StatsTracker.retiredPeople++;
-				break;
-			case 3:
-				// Too young
-				StatsTracker.amountOfChildren++;
-				break;
-			default:
-				throw new RuntimeException("Unkown Job Status");
-			}
+			humanDoJob(human);
 		}
 
 		if (this.day % 28 == 0) {
@@ -183,6 +158,36 @@ public class Simulation extends Thread {
 		}
 
 		StatsTracker.track(population, day);
+	}
+
+	private void humanDoJob(Human human) {
+		if (day % 7 == 5 || day % 7 == 6) {
+			// Saturday or Sunday
+			return; // No work
+		}
+
+		human.assignJob();
+		int jobStatus = human.tryToDoJob();
+
+		switch (jobStatus) {
+		case 0:
+			// They did their job
+			break;
+		case 1:
+			StatsTracker.unemployedPeople++;
+			// They are unemployed
+			break;
+		case 2:
+			// Retired
+			StatsTracker.retiredPeople++;
+			break;
+		case 3:
+			// Too young
+			StatsTracker.amountOfChildren++;
+			break;
+		default:
+			throw new RuntimeException("Unkown Job Status");
+		}
 	}
 
 	private void reproduce() {
