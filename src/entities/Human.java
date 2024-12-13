@@ -46,6 +46,7 @@ public class Human {
 	private Human parent2;
 	private final ArrayList<Human> children = new ArrayList<>();
 	private final Random random = new Random();
+	private boolean dead = false;
 
 	public Human(boolean isChild) {
 		name = NameLoader.getRandomName(random.nextInt(2));
@@ -249,6 +250,23 @@ public class Human {
 		money -= healthInsuranceCost;
 	}
 
+	public void payRent(int rent) {
+		if (house == null) {
+			// Human is not assigned to any house, no rent to pay
+			this.setMentalHealth(this.getMentalHealth() - 1);
+			return;
+		}
+
+		if (money - rent < 0) {
+			// Not enough money to pay rent, remove from the house
+			house.removeResident(this);
+			return;
+		}
+
+		// Deduct rent from money if there is enough
+		money -= rent;
+	}
+
 	public void die() {
 		if (this.parent1 != null) {
 			this.parent1.removeChild(this);
@@ -294,6 +312,9 @@ public class Human {
 				child.setParent2(null);
 			}
 		}
+
+		this.setHealth(0);
+		this.dead = true;
 	}
 
 	private void addMoney(int amountOfMoney) {
@@ -515,5 +536,9 @@ public class Human {
 
 	public void setHouse(House house) {
 		this.house = house;
+	}
+
+	public boolean isDead() {
+		return dead;
 	}
 }
