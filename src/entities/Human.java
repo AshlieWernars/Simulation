@@ -15,7 +15,7 @@ public class Human {
 	private Job job = null;
 	private int money = 0;
 	private House house;
-	private int lastSalary = 500;
+	private int lastSalary;
 
 	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
