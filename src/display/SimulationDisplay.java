@@ -7,6 +7,7 @@ import java.awt.image.BufferStrategy;
 
 import housing.HousingSystem;
 import simulation.Simulation;
+import simulation.StatsTracker;
 
 public class SimulationDisplay extends Canvas {
 
@@ -85,8 +86,10 @@ public class SimulationDisplay extends Canvas {
 		}
 
 		if (resetButton.isButtonPressed()) {
+			simulation.stopSimulation();
 			simulation.reset(); // Reset the simulation state
-			simulation.updateStats(); // Update stats after reset
+			StatsTracker.updateStats(0); // Update stats after reset
+			simulation.startSimulation();
 		}
 	}
 
@@ -108,7 +111,7 @@ public class SimulationDisplay extends Canvas {
 		resetButton.render(g);
 
 		g.setColor(Color.white);
-		String simStats = simulation.getStats();
+		String simStats = StatsTracker.getStats();
 		if (simStats != null) {
 			int x = 130, y = 50;
 			int lineHeight = 15;

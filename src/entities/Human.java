@@ -291,7 +291,8 @@ public class Human {
 			} else {
 				// Give money to the state (implement state logic as needed)
 				// state.addMoney(money);
-				throw new RuntimeException(this.getName() + " " + this.getAge() + " " + this.getMoney());
+				// throw new RuntimeException(this.getName() + " " + this.getAge() + " " +
+				// this.getMoney());
 			}
 			return; // No need to proceed further if no children
 		}
