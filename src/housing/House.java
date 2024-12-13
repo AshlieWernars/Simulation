@@ -35,7 +35,12 @@ public class House {
 	}
 
 	public void makeResidentsPayRent() {
+		if (residents.isEmpty()) {
+			return;
+		}
+
 		double rentToPay = price / residents.size();
+
 		int rentPerResident = (int) Math.round(rentToPay);
 
 		for (int i = 0; i < residents.size(); i++) {
@@ -48,7 +53,11 @@ public class House {
 			throw new IllegalArgumentException("Rating is invalid: " + rating);
 		}
 		price = HousingSystem.PRICE_RANGES[rating];
-		pricePerMonthPerPerson = price / residents.size();
+		if (residents.isEmpty()) {
+			pricePerMonthPerPerson = price;
+		} else {
+			pricePerMonthPerPerson = price / residents.size();
+		}
 	}
 
 	public boolean isFull() {
