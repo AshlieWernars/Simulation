@@ -22,6 +22,10 @@ public class House {
 	}
 
 	public void addResident(Human human) {
+		if (human.getHouse() != null) {
+			return;
+		}
+
 		if (!residents.contains(human)) {
 			residents.add(human);
 		}

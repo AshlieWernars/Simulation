@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import behavior.Behavior;
+import housing.House;
 import insurance.HealthInsurance;
 import job.Job;
 import names.NameLoader;
@@ -13,6 +14,7 @@ public class Human {
 	private int age = 0; // Age of the human
 	private Job job = null;
 	private int money = 0;
+	private House house;
 
 	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
@@ -505,5 +507,13 @@ public class Human {
 
 	public void removeChild(Human child) {
 		this.children.remove(child);
+	}
+
+	public House getHouse() {
+		return house;
+	}
+
+	public void setHouse(House house) {
+		this.house = house;
 	}
 }

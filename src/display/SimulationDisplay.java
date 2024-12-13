@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 
+import housing.HousingSystem;
 import simulation.Simulation;
 
 public class SimulationDisplay extends Canvas {
@@ -62,20 +63,20 @@ public class SimulationDisplay extends Canvas {
 			}
 		}
 	}
-	
+
 	int timer = 0;
 
 	private void update() {
 		if (startButton.isButtonPressed()) {
 			simulation.startSimulation();
 		}
-		
-		if(stepButton.isButtonPressed() && timer == 0) {
+
+		if (stepButton.isButtonPressed() && timer == 0) {
 			timer = 60 * 1;
 			simulation.simulateGeneration();
 		}
-		
-		if(timer > 0) {
+
+		if (timer > 0) {
 			timer--;
 		}
 
@@ -117,6 +118,8 @@ public class SimulationDisplay extends Canvas {
 				y += lineHeight; // Move down for the next line
 			}
 		}
+
+		HousingSystem.render(g);
 
 		bs.show();
 		g.dispose();

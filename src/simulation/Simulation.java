@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import entities.Human;
+import housing.HousingSystem;
 import interaction.InteractionHandler;
 import job.Job;
 import names.NameLoader;
@@ -63,9 +64,11 @@ public class Simulation extends Thread {
 	private String stats;
 	Random random = new Random();
 
+	@SuppressWarnings("unused")
 	public Simulation() {
 		try {
 			NameLoader.loadNames("names.txt");
+			new HousingSystem();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -201,6 +204,8 @@ public class Simulation extends Thread {
 		this.unemployedPeople = 0;
 		this.retiredPeople = 0;
 		this.richestPerson = null;
+
+		HousingSystem.update();
 
 		// Humans interact with each other
 		for (int i = 0; i < population.size(); i++) {
