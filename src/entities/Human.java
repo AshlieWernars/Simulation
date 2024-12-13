@@ -219,7 +219,6 @@ public class Human {
 	 * @return 0 if job done, 1 if no job, 2 if retired, 3 if too young
 	 */
 	public int tryToDoJob() {
-		lastSalary = 0;
 		if (age > 65) { // Retired
 			job = null;
 			money += 45;
