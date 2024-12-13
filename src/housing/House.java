@@ -15,7 +15,6 @@ public class House {
 	// Var's
 	private int rating; // Rating of the house, could be from 1 to 10
 	private double price = -1; // Rent price per sim step
-	private double pricePerMonthPerPerson;
 
 	public House(int rating) {
 		this.rating = rating;
@@ -53,11 +52,6 @@ public class House {
 			throw new IllegalArgumentException("Rating is invalid: " + rating);
 		}
 		price = HousingSystem.PRICE_RANGES[rating];
-		if (residents.isEmpty()) {
-			pricePerMonthPerPerson = price;
-		} else {
-			pricePerMonthPerPerson = price / residents.size();
-		}
 	}
 
 	public boolean isFull() {
@@ -100,10 +94,6 @@ public class House {
 
 	public double getPrice() {
 		return price;
-	}
-
-	public double getPricePerMonthPerPerson() {
-		return pricePerMonthPerPerson;
 	}
 
 	public void setPrice(double price) {

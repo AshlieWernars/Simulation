@@ -101,6 +101,11 @@ public class Simulation extends Thread {
 		for (int i = 0; i < population.size(); i++) {
 			Human human = population.get(i);
 
+			if (human.isDead()) {
+				StatsTracker.amountOfKilledHumans++;
+				population.remove(human);
+			}
+
 			if (random.nextInt(10) >= human.getExtroversion() || random.nextInt(10) >= human.getSocialSkill()) {
 				continue; // Human interact less based on low extroversion or low social skill
 			}
@@ -125,6 +130,16 @@ public class Simulation extends Thread {
 
 		HousingSystem.update();
 
+		assignHumansHouses();
+
+		if (this.day % 365 == 0) {
+			runYear();
+		}
+
+		StatsTracker.track(population, day);
+	}
+
+	private void assignHumansHouses() {
 		for (Human human : population) {
 			if (human.getHouse() != null) { // Already has a house
 				continue;
@@ -137,28 +152,17 @@ public class Simulation extends Thread {
 
 			House house = HousingSystem.getHouses().get(i);
 
-			// if (house.getPricePerMonthPerPerson() > human.getLastSalary()) {
-			/*
-			 * System.err.println(house.getPricePerMonthPerPerson()); if
-			 * (human.getLastSalary() == 0 && human.getJob() != null) { throw new
-			 * RuntimeException(human.getMoney() + ""); }
-			 * System.err.println(human.getLastSalary());
-			 * System.err.println("------------");
-			 */
-			// continue; // House is too expensive
-			// }
+			if (human.getAge() < 18 || human.getAge() > 65) {
+				house.addResident(human);
+				continue;
+			}
+
+			if (house.getPrice() > human.getMoney()) {
+				continue; // House is too expensive
+			}
 
 			house.addResident(human);
 		}
-
-		// Reproduction (based on traits compatibility)
-		reproduce();
-
-		if (this.day % 365 == 0) {
-			runYear();
-		}
-
-		StatsTracker.track(population, day);
 	}
 
 	private void humanDoJob(Human human) {
@@ -247,6 +251,9 @@ public class Simulation extends Thread {
 
 	// Code to run every year/13 months/365 days
 	private void runYear() {
+		// Reproduction (based on traits compatibility)
+		reproduce();
+
 		for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
 			Human human = iterator.next();
 			human.ageOneYear();
