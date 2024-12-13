@@ -38,6 +38,12 @@ public class HousingSystem {
 		}
 	}
 
+	public static void makeResidentsPayRent() {
+		for (House house : houses) {
+			house.makeResidentsPayRent();
+		}
+	}
+
 	public static void render(Graphics g) {
 		int x = 350;
 		int y = 10;

@@ -32,7 +32,9 @@ public class House {
 				continue;
 			}
 		}
+	}
 
+	public void makeResidentsPayRent() {
 		double rentToPay = price / residents.size();
 		int rentPerResident = (int) Math.round(rentToPay);
 

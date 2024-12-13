@@ -16,7 +16,7 @@ import names.NameLoader;
 public class Simulation extends Thread {
 
 	private List<Human> population;
-	private final int populationLimit = 50;
+	private final int populationLimit = 10000;
 	private int day;
 
 	private boolean isRunning;
@@ -88,7 +88,7 @@ public class Simulation extends Thread {
 		StatsTracker.fullReset();
 
 		this.population.clear();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 50; i++) {
 			population.add(new Human(false));
 		}
 	}
@@ -142,22 +142,6 @@ public class Simulation extends Thread {
 			default:
 				throw new RuntimeException("Unkown Job Status");
 			}
-
-			human1.payHealthInsurance();
-
-			if (human1.getHouse() == null) { // No house
-				for (House house : HousingSystem.getHouses()) {
-					if (house.isFull()) {
-						continue;
-					}
-
-					if (house.getPricePerMonthPerPerson() > human1.getLastSalary()) {
-						continue; // House is too expensive
-					}
-
-					house.addResident(human1);
-				}
-			}
 		}
 
 		if (this.day % 28 == 0) {
@@ -169,43 +153,8 @@ public class Simulation extends Thread {
 		// Reproduction (based on traits compatibility)
 		reproduce();
 
-		for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
-			Human human = iterator.next();
-			human.ageOneYear();
-			if (human.hadChildDuringSimStep()) {
-				StatsTracker.amountOfNewChildren++;
-				human.setHadChildDuringSimStep(false);
-			}
-
-			// Base death chance based on age
-			double deathChance = 0;
-
-			if (human.getAge() <= 1) {
-				deathChance = 0.003; // 0.3% chance for infants
-			} else if (human.getAge() <= 40) {
-				deathChance = 0.001; // 0.1% chance for young adults
-			} else if (human.getAge() <= 60) {
-				deathChance = 0.005; // 0.5% chance for middle-aged adults
-			} else if (human.getAge() <= 80) {
-				deathChance = 0.02; // 2% chance for older adults
-			} else if (human.getAge() <= 90) {
-				deathChance = 0.10; // 10% chance for 80-90
-			} else {
-				deathChance = 0.30; // 30% chance for 90+
-			}
-
-			// Adjust death chance based on health
-			if (human.getHealth() < 5) {
-				double healthFactor = (5 - human.getHealth()) / 5.0; // Scales between 0 and 1
-				deathChance += deathChance * healthFactor; // Increases death chance proportionally
-			}
-
-			// Random chance to die based on the adjusted death chance
-			if (random.nextFloat() < deathChance) {
-				StatsTracker.amountOfKilledHumans++;
-				human.die();
-				iterator.remove(); // Remove the human if they die
-			}
+		if (this.day % 365 == 0) {
+			runYear();
 		}
 
 		StatsTracker.track(population, day);
@@ -254,8 +203,68 @@ public class Simulation extends Thread {
 		}
 	}
 
-	// Code to run every 28 days
+	// Code to run every 28 days/1 Month
 	private void runMonth() {
-		System.out.println("28 days have passed! Running scheduled task.");
+		for (Human human1 : population) {
+			human1.payHealthInsurance();
+
+			if (human1.getHouse() == null) { // No house
+				for (House house : HousingSystem.getHouses()) {
+					if (house.isFull()) {
+						continue;
+					}
+
+					if (house.getPricePerMonthPerPerson() > human1.getLastSalary()) {
+						continue; // House is too expensive
+					}
+
+					house.addResident(human1);
+				}
+			}
+		}
+
+		HousingSystem.makeResidentsPayRent();
+	}
+
+	// Code to run every year/13 months/365 days
+	private void runYear() {
+		for (Iterator<Human> iterator = population.iterator(); iterator.hasNext();) {
+			Human human = iterator.next();
+			human.ageOneYear();
+			if (human.hadChildDuringSimStep()) {
+				StatsTracker.amountOfNewChildren++;
+				human.setHadChildDuringSimStep(false);
+			}
+
+			// Base death chance based on age
+			double deathChance = 0;
+
+			if (human.getAge() <= 1) {
+				deathChance = 0.003; // 0.3% chance for infants
+			} else if (human.getAge() <= 40) {
+				deathChance = 0.001; // 0.1% chance for young adults
+			} else if (human.getAge() <= 60) {
+				deathChance = 0.005; // 0.5% chance for middle-aged adults
+			} else if (human.getAge() <= 80) {
+				deathChance = 0.02; // 2% chance for older adults
+			} else if (human.getAge() <= 90) {
+				deathChance = 0.10; // 10% chance for 80-90
+			} else {
+				deathChance = 0.30; // 30% chance for 90+
+			}
+
+			// Adjust death chance based on health
+			if (human.getHealth() < 5) {
+				double healthFactor = (5 - human.getHealth()) / 5.0; // Scales between 0 and 1
+				deathChance += deathChance * healthFactor; // Increases death chance proportionally
+			}
+
+			// Random chance to die based on the adjusted death chance
+			if (random.nextFloat() < deathChance) {
+				StatsTracker.amountOfKilledHumans++;
+				human.die();
+				iterator.remove(); // Remove the human if they die
+			}
+		}
 	}
 }
