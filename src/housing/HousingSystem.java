@@ -6,16 +6,34 @@ import java.util.ArrayList;
 
 public class HousingSystem {
 
-	private final static ArrayList<House> houses = new ArrayList<>();
+	// Pre-Defined Var's
+	private static final ArrayList<House> houses = new ArrayList<>();
+	static final double[] PRICE_RANGES = { 250, 300, 350, 400, 500, 600, 750, 900, 1100, 1300, 1500 };
+	private static final Color[] RATING_COLORS = { //
+			Color.RED, // Rating 0
+			Color.ORANGE, // Rating 1
+			Color.YELLOW, // Rating 2
+			Color.GREEN.brighter(), // Rating 3
+			Color.CYAN, // Rating 4
+			Color.BLUE, // Rating 5
+			Color.MAGENTA, // Rating 6
+			Color.PINK, // Rating 7
+			Color.LIGHT_GRAY, // Rating 8
+			Color.DARK_GRAY, // Rating 9
+			Color.GRAY // Rating 10
+	};
 
 	public HousingSystem() {
-		House house = new House("Main 123", 10, 500);
-		houses.add(house);
+		houses.add(new House("Main 123", 1));
+		houses.add(new House("Main 123", 3));
+		houses.add(new House("Main 123", 5));
+		houses.add(new House("Main 123", 7));
+		houses.add(new House("Main 123", 9));
 	}
 
 	public static void update() {
 		for (House house : houses) {
-
+			house.update();
 		}
 	}
 
@@ -23,47 +41,16 @@ public class HousingSystem {
 		int x = 400;
 		int y = 200;
 		for (House house : houses) {
-			switch (house.getRating()) {
-			case 0:
-				g.setColor(Color.RED); // Rating 0 -> Red
-				break;
-			case 1:
-				g.setColor(Color.ORANGE); // Rating 1 -> Orange
-				break;
-			case 2:
-				g.setColor(Color.YELLOW); // Rating 2 -> Yellow
-				break;
-			case 3:
-				g.setColor(Color.GREEN.brighter()); // Rating 3 -> Green
-				break;
-			case 4:
-				g.setColor(Color.CYAN); // Rating 4 -> Cyan
-				break;
-			case 5:
-				g.setColor(Color.BLUE); // Rating 5 -> Blue
-				break;
-			case 6:
-				g.setColor(Color.MAGENTA); // Rating 6 -> Magenta
-				break;
-			case 7:
-				g.setColor(Color.PINK); // Rating 7 -> Pink
-				break;
-			case 8:
-				g.setColor(Color.LIGHT_GRAY); // Rating 8 -> Light Gray
-				break;
-			case 9:
-				g.setColor(Color.DARK_GRAY); // Rating 9 -> Dark Gray
-				break;
-			case 10:
-				g.setColor(Color.GREEN); // Rating 10 -> Green
-				break;
-			default:
-				g.setColor(Color.WHITE); // Default to black for invalid cases
-				break;
+			int rating = house.getRating();
+
+			// Check if the rating is valid (0 to 10)
+			if (rating >= 0 && rating <= 10) {
+				g.setColor(RATING_COLORS[rating]); // Set the color based on rating
+			} else {
+				g.setColor(Color.WHITE); // Default color for invalid ratings
 			}
+			g.fillRect(x, y, 20, 20);
+			x += 50;
 		}
-		
-		g.fillRect(x, y, 20, 20);
-		x += 50;
 	}
 }

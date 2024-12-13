@@ -1,6 +1,7 @@
 package housing;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import entities.Human;
@@ -13,12 +14,38 @@ public class House {
 
 	// Var's
 	private int rating; // Rating of the house, could be from 1 to 10
-	private double price; // Rent price per sim step
+	private double price = -1; // Rent price per sim step
 
-	public House(String address, int rating, double price) {
+	public House(String address, int rating) {
 		this.address = address;
 		this.rating = rating;
-		this.price = price;
+	}
+
+	public void update() {
+		setPriceBasedOnRating(rating);
+
+		Iterator<Human> iterator = residents.iterator();
+		while (iterator.hasNext()) {
+			Human human = iterator.next();
+			if (human.isDead()) {
+				iterator.remove(); // Safe removal
+				continue;
+			}
+		}
+
+		double rentToPay = price / residents.size();
+		int rentPerResident = (int) Math.round(rentToPay);
+
+		for (Human human : residents) {
+			human.payRent(rentPerResident);
+		}
+	}
+
+	private void setPriceBasedOnRating(int rating) {
+		if (rating < 0 || rating > 10) {
+			throw new IllegalArgumentException("Rating is invalid: " + rating);
+		}
+		price = HousingSystem.PRICE_RANGES[rating];
 	}
 
 	public void addResident(Human human) {
@@ -34,6 +61,7 @@ public class House {
 	public void removeResident(Human human) {
 		if (residents.contains(human)) {
 			residents.remove(human);
+			human.setHouse(null);
 		}
 	}
 
