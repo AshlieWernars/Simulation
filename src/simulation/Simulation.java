@@ -150,6 +150,31 @@ public class Simulation extends Thread {
 
 		HousingSystem.update();
 
+		for (Human human : population) {
+			if (human.getHouse() != null) { // Already has a house
+				continue;
+			}
+
+			for (House house : HousingSystem.getHouses()) {
+				if (house.isFull()) {
+					continue;
+				}
+
+				// if (house.getPricePerMonthPerPerson() > human.getLastSalary()) {
+				/*
+				 * System.err.println(house.getPricePerMonthPerPerson()); if
+				 * (human.getLastSalary() == 0 && human.getJob() != null) { throw new
+				 * RuntimeException(human.getMoney() + ""); }
+				 * System.err.println(human.getLastSalary());
+				 * System.err.println("------------");
+				 */
+				// continue; // House is too expensive
+				// }
+
+				house.addResident(human);
+			}
+		}
+
 		// Reproduction (based on traits compatibility)
 		reproduce();
 
@@ -205,22 +230,10 @@ public class Simulation extends Thread {
 
 	// Code to run every 28 days/1 Month
 	private void runMonth() {
-		for (Human human1 : population) {
-			human1.payHealthInsurance();
+		for (Human human : population) {
+			human.recieveSalary();
 
-			if (human1.getHouse() == null) { // No house
-				for (House house : HousingSystem.getHouses()) {
-					if (house.isFull()) {
-						continue;
-					}
-
-					if (house.getPricePerMonthPerPerson() > human1.getLastSalary()) {
-						continue; // House is too expensive
-					}
-
-					house.addResident(human1);
-				}
-			}
+			human.payHealthInsurance();
 		}
 
 		HousingSystem.makeResidentsPayRent();

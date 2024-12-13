@@ -46,7 +46,7 @@ public class StatsTracker {
 	static int retiredPeople;
 
 	static Human richestPerson;
-	static double highestWealthReached;
+	static int highestWealthReached;
 
 	private static String stats;
 	private static int populationSize;
@@ -177,8 +177,11 @@ public class StatsTracker {
 		updateStats(generation);
 	}
 
-	public static void updateStats(int generation) {
-		stats = "Generation: " + generation + "\n";
+	public static void updateStats(int day) {
+		int years = day / 365; // Calculate years
+		int remainingDays = day % 365; // Calculate remaining days
+
+		stats = "Year: " + years + ", Days: " + remainingDays + "\n"; // Display both years and remaining days
 		stats += "Population Size: " + populationSize + "\n";
 		stats += "Amount of added children: " + (amountOfNewChildren / 2) + "\n";
 		stats += "Amount of killed people: " + (amountOfKilledHumans) + "\n";

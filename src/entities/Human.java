@@ -15,7 +15,7 @@ public class Human {
 	private Job job = null;
 	private int money = 0;
 	private House house;
-	private int lastSalary;
+	private int lastSalary = 500;
 
 	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
@@ -48,6 +48,7 @@ public class Human {
 	private final ArrayList<Human> children = new ArrayList<>();
 	private final Random random = new Random();
 	private boolean dead = false;
+	double hoursWorked;
 
 	public Human(boolean isChild) {
 		name = NameLoader.getRandomName(random.nextInt(2));
@@ -218,7 +219,6 @@ public class Human {
 	 * @return 0 if job done, 1 if no job, 2 if retired, 3 if too young
 	 */
 	public int tryToDoJob() {
-		lastSalary = 0;
 		if (age > 65) { // Retired
 			job = null;
 			money += 45;
@@ -234,13 +234,27 @@ public class Human {
 			return 1;
 		}
 
-		double salaryEarned = job.doJob(job, this);
-
-		lastSalary = (int) Math.round(salaryEarned);
-
-		money += lastSalary;
+		hoursWorked += job.doJob();
 
 		return 0;
+	}
+
+	public void recieveSalary() {
+		lastSalary = 0;
+
+		if (job == null) { // Unemployed, will add welfare in the future
+			return;
+		}
+
+		if (hoursWorked == 0) { // Lazy ass
+			return;
+		}
+
+		lastSalary = (int) Math.round(hoursWorked * job.getSalary());
+
+		hoursWorked = 0;
+
+		money += lastSalary;
 	}
 
 	public void payHealthInsurance() {
@@ -491,7 +505,7 @@ public class Human {
 		this.job = job;
 	}
 
-	public double getMoney() {
+	public int getMoney() {
 		return money;
 	}
 
@@ -547,7 +561,7 @@ public class Human {
 		return dead;
 	}
 
-	public double getLastSalary() {
-		return 0;
+	public int getLastSalary() {
+		return lastSalary;
 	}
 }
