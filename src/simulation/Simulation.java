@@ -205,8 +205,6 @@ public class Simulation extends Thread {
 		this.retiredPeople = 0;
 		this.richestPerson = null;
 
-		HousingSystem.update();
-
 		// Humans interact with each other
 		for (int i = 0; i < population.size(); i++) {
 			Human human1 = population.get(i);
@@ -263,6 +261,8 @@ public class Simulation extends Thread {
 
 			human1.payHealthInsurance();
 		}
+
+		HousingSystem.update();
 
 		// Reproduction (based on traits compatibility)
 		reproduce();
