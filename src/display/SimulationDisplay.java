@@ -26,7 +26,7 @@ public class SimulationDisplay extends Canvas {
 		input = new Input();
 		this.addMouseListener(input);
 		this.addKeyListener(input);
-		display = new Display(1280, 720, "Simulation", input, this);
+		display = new Display(1920, 720, "Simulation", input, this);
 
 		// Create buttons
 		startButton = new Button(25, 50, 100, 40, "Start");
@@ -100,7 +100,7 @@ public class SimulationDisplay extends Canvas {
 		Graphics g = bs.getDrawGraphics();
 
 		g.setColor(Color.black);
-		g.fillRect(0, 0, 1280, 720);
+		g.fillRect(0, 0, 1920, 720);
 
 		startButton.render(g);
 		stepButton.render(g);
@@ -110,7 +110,7 @@ public class SimulationDisplay extends Canvas {
 		g.setColor(Color.white);
 		String simStats = simulation.getStats();
 		if (simStats != null) {
-			int x = 200, y = 50;
+			int x = 130, y = 50;
 			int lineHeight = 15;
 
 			for (String line : simStats.split("\n")) {

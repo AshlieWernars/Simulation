@@ -68,7 +68,7 @@ public class Simulation extends Thread {
 	public Simulation() {
 		try {
 			NameLoader.loadNames("names.txt");
-			new HousingSystem();
+			new HousingSystem(populationLimit);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -514,9 +514,9 @@ public class Simulation extends Thread {
 		stats += "Retired People: " + retiredPeople + "\n";
 
 		stats += "Richest Person: " + richestPerson.getName() + "\n";
-		stats += "Current wealth of the richest person: " + richestPerson.getMoney() + "\n";
+		stats += "Richest Person Wealth: " + richestPerson.getMoney() + "\n";
 
-		System.out.println(stats);
+		//System.out.println(stats);
 	}
 
 	public String getStats() {

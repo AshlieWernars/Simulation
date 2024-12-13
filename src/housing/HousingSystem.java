@@ -3,6 +3,7 @@ package housing;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class HousingSystem {
 
@@ -23,12 +24,12 @@ public class HousingSystem {
 			Color.GRAY // Rating 10
 	};
 
-	public HousingSystem() {
-		houses.add(new House(1));
-		houses.add(new House(3));
-		houses.add(new House(5));
-		houses.add(new House(7));
-		houses.add(new House(9));
+	Random r = new Random();
+
+	public HousingSystem(int populationLimit) {
+		for (int i = 0; i < populationLimit; i++) {
+			houses.add(new House(r.nextInt(11)));
+		}
 	}
 
 	public static void update() {
@@ -38,8 +39,8 @@ public class HousingSystem {
 	}
 
 	public static void render(Graphics g) {
-		int x = 400;
-		int y = 200;
+		int x = 350;
+		int y = 10;
 		for (House house : houses) {
 			int rating = house.getRating();
 
@@ -49,8 +50,12 @@ public class HousingSystem {
 			} else {
 				g.setColor(Color.WHITE); // Default color for invalid ratings
 			}
-			g.fillRect(x, y, 20, 20);
-			x += 50;
+			g.fillRect(x, y, 5, 5);
+			x += 10;
+			if (x >= 1900) {
+				x = 350;
+				y += 10;
+			}
 		}
 	}
 }
