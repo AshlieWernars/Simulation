@@ -6,7 +6,7 @@ import entities.Human;
 
 public class HealthInsurance {
 
-	private static final int baseInsurancePay = 5; // Per sim step
+	private static final int baseInsurancePay = 150; // Per month
 	private static final Random random = new Random();
 
 	/**
