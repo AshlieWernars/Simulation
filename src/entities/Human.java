@@ -13,9 +13,8 @@ public class Human {
 
 	private int age = 0; // Age of the human
 	private Job job = null;
-	private int money = 0;
+	private int money = 500;
 	private House house;
-	private int lastSalary;
 
 	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
@@ -239,9 +238,8 @@ public class Human {
 	}
 
 	public void recieveSalary() {
-		lastSalary = 0;
-		
-		if(age > 65) {
+
+		if (age > 65) {
 			money += 1350;
 			job = null;
 			return;
@@ -255,11 +253,9 @@ public class Human {
 			return;
 		}
 
-		lastSalary = (int) Math.round(hoursWorked * job.getSalary());
-
 		hoursWorked = 0;
 
-		money += lastSalary;
+		money += (int) Math.round(hoursWorked * job.getSalary());
 	}
 
 	public void payHealthInsurance() {
@@ -363,7 +359,7 @@ public class Human {
 	}
 
 	public void setAge(int age) {
-		this.age = Math.max(0, Math.min(age, 100)); // Ensure age stays between 0 and 100
+		this.age = Math.max(0, age); // Ensure age stays between 0 and 100
 	}
 
 	public void ageOneYear() {
@@ -564,9 +560,5 @@ public class Human {
 
 	public boolean isDead() {
 		return dead;
-	}
-
-	public int getLastSalary() {
-		return lastSalary;
 	}
 }
