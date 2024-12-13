@@ -15,6 +15,7 @@ public class Human {
 	private Job job = null;
 	private int money = 0;
 	private House house;
+	private int lastSalary;
 
 	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
@@ -217,6 +218,7 @@ public class Human {
 	 * @return 0 if job done, 1 if no job, 2 if retired, 3 if too young
 	 */
 	public int tryToDoJob() {
+		lastSalary = 0;
 		if (age > 65) { // Retired
 			job = null;
 			money += 45;
@@ -234,7 +236,9 @@ public class Human {
 
 		double salaryEarned = job.doJob(job, this);
 
-		money += (int) Math.round(salaryEarned);
+		lastSalary = (int) Math.round(salaryEarned);
+
+		money += lastSalary;
 
 		return 0;
 	}
@@ -541,5 +545,9 @@ public class Human {
 
 	public boolean isDead() {
 		return dead;
+	}
+
+	public double getLastSalary() {
+		return 0;
 	}
 }
