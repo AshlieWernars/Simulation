@@ -53,8 +53,10 @@ public class HousingSystem {
 			// Check if the rating is valid (0 to 10)
 			if (rating >= 0 && rating <= 10) {
 				g.setColor(RATING_COLORS[rating]); // Set the color based on rating
-			} else {
-				g.setColor(Color.WHITE); // Default color for invalid ratings
+			}
+
+			if (house.isFull()) {
+				g.setColor(Color.WHITE);
 			}
 			g.fillRect(x, y, 5, 5);
 			x += 10;
