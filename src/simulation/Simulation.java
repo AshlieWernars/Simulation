@@ -206,6 +206,8 @@ public class Simulation extends Thread {
 	// Code to run every 28 days/1 Month
 	private void runMonth() {
 		for (Human human1 : population) {
+			human1.recieveSalary();
+
 			human1.payHealthInsurance();
 
 			if (human1.getHouse() == null) { // No house

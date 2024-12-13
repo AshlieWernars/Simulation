@@ -2,94 +2,76 @@ package job;
 
 import java.util.Random;
 
-import entities.Human;
-
 public enum Job {
 
-	FARMER(2500), //
-	HUNTER(2500), //
-	BUILDER(2800), //
-	TEACHER(2800), //
-	HEALER(4500), //
-	GUARD(2200), //
-	MERCHANT(3000), //
-	ARTIST(2500), //
-	SCIENTIST(3500), //
-	LEADER(7500);//
+	FARMER(15), //
+	HUNTER(15), //
+	BUILDER(18), //
+	TEACHER(20), //
+	HEALER(25), //
+	GUARD(20), //
+	MERCHANT(15), //
+	ARTIST(20), //
+	SCIENTIST(35), //
+	LEADER(50);//
 
-	private final int salary;
+	private final int salaryPerHour;
 
-	Job(int salary) {
-		this.salary = salary;
+	Job(int salaryPerHour) {
+		this.salaryPerHour = salaryPerHour;
 	}
 
 	public int getSalary() {
-		return salary;
+		return salaryPerHour;
 	}
 
-	/**
-	 * Modify traits based on job and calculate salary
-	 *
-	 * @param job
-	 * @param human
-	 * @return modified salary
-	 */
-	public double doJob(Job job, Human human) {
+	public double doJob() {
 		Random r = new Random();
-		// Random multiplier between 0.75 and 1.25, with an average near 1
-		double multiplier = 0.75 + (r.nextDouble() * 0.5);
+		double hoursWorked = 0;
 
-		// Apply trait modifications based on job
-		switch (job) {
+		// Set the base hours worked per day for each job
+		double baseHours = 8.0; // Assume 8 hours as the default for a standard workday
+
+		// Apply job-specific work hours
+		switch (this) {
 		case ARTIST:
-			human.setCreativity(human.getCreativity() + 1);
-			human.setAttractiveness(human.getAttractiveness() - 1);
+			baseHours = 6.0; // Artists might work fewer hours
 			break;
 		case BUILDER:
-			human.setPhysicalStrength(human.getPhysicalStrength() + 1);
-			human.setConscientiousness(human.getConscientiousness() + 1);
+			baseHours = 8.0; // Builders typically work full days
 			break;
 		case FARMER:
-			human.setPhysicalStrength(human.getPhysicalStrength() + 1);
-			human.setHealth(human.getHealth() + 1);
+			baseHours = 8.5; // Farmers may work slightly longer days
 			break;
 		case GUARD:
-			human.setPhysicalStrength(human.getPhysicalStrength() + 1);
-			human.setSocialDominance(human.getSocialDominance() + 1);
+			baseHours = 8.0; // Guards usually work standard shifts
 			break;
 		case HEALER:
-			human.setEmpathy(human.getEmpathy() + 1);
-			human.setMentalHealth(human.getMentalHealth() + 1);
+			baseHours = 8.0; // Healers work around 8 hours
 			break;
 		case HUNTER:
-			human.setPhysicalStrength(human.getPhysicalStrength() + 1);
-			human.setCreativity(human.getCreativity() - 1); // WTF???
+			baseHours = 7.5; // Hunters may work shorter days
 			break;
 		case LEADER:
-			human.setSocialDominance(human.getSocialDominance() + 1);
-			human.setConscientiousness(human.getConscientiousness() + 1);
+			baseHours = 8.5; // Leaders often work long hours
 			break;
 		case MERCHANT:
-			// Chance of becoming greedy
-			human.setSocialSkill(human.getSocialSkill() + 1);
-			human.setMotivation(human.getMotivation() + 1);
+			baseHours = 7.5; // Merchants may have variable hours
 			break;
 		case SCIENTIST:
-			human.setIntelligence(human.getIntelligence() + 1);
-			human.setOpenness(human.getOpenness() + 1);
+			baseHours = 8.0; // Scientists typically work standard hours
 			break;
 		case TEACHER:
-			// Mental health should go down
-			human.setSocialSkill(human.getSocialSkill() + 1);
-			human.setEmpathy(human.getEmpathy() + 1);
+			baseHours = 7.0; // Teachers may work fewer hours, including prep
 			break;
 		default:
 			break;
 		}
 
-		// Calculate the salary with the multiplier
-		double baseSalary = job.getSalary(); // Assuming this method exists to get the base salary
-		return baseSalary * multiplier;
+		// Add some randomness to the hours worked, within ±1 hour range
+		hoursWorked = baseHours + (r.nextDouble() * 2.0 - 1.0); // Random between -1 and +1 hour
+
+		return hoursWorked;
 	}
 
 	// Return a random job for initialization

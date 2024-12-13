@@ -48,6 +48,7 @@ public class Human {
 	private final ArrayList<Human> children = new ArrayList<>();
 	private final Random random = new Random();
 	private boolean dead = false;
+	double hoursWorked;
 
 	public Human(boolean isChild) {
 		name = NameLoader.getRandomName(random.nextInt(2));
@@ -234,13 +235,19 @@ public class Human {
 			return 1;
 		}
 
-		double salaryEarned = job.doJob(job, this);
-
-		lastSalary = (int) Math.round(salaryEarned);
-
-		money += lastSalary;
+		hoursWorked += job.doJob();
 
 		return 0;
+	}
+
+	public void recieveSalary() {
+		if (job == null) { // Unemployed, will add welfare in the future
+			return;
+		}
+
+		lastSalary = (int) Math.round(hoursWorked * job.getSalary());
+
+		money += lastSalary;
 	}
 
 	public void payHealthInsurance() {
@@ -491,7 +498,7 @@ public class Human {
 		this.job = job;
 	}
 
-	public double getMoney() {
+	public int getMoney() {
 		return money;
 	}
 
