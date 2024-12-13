@@ -24,11 +24,11 @@ public class HousingSystem {
 	};
 
 	public HousingSystem() {
-		houses.add(new House("Main 123", 1));
-		houses.add(new House("Main 123", 3));
-		houses.add(new House("Main 123", 5));
-		houses.add(new House("Main 123", 7));
-		houses.add(new House("Main 123", 9));
+		houses.add(new House(1));
+		houses.add(new House(3));
+		houses.add(new House(5));
+		houses.add(new House(7));
+		houses.add(new House(9));
 	}
 
 	public static void update() {

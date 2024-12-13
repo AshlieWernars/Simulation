@@ -9,15 +9,13 @@ import entities.Human;
 public class House {
 
 	// Pre-Defined Var's
-	private final String address;
 	private final ArrayList<Human> residents = new ArrayList<>(); // List of residents (Humans) living in the house
 
 	// Var's
 	private int rating; // Rating of the house, could be from 1 to 10
 	private double price = -1; // Rent price per sim step
 
-	public House(String address, int rating) {
-		this.address = address;
+	public House(int rating) {
 		this.rating = rating;
 	}
 
@@ -67,10 +65,6 @@ public class House {
 
 	public double getRentPrice() {
 		return price;
-	}
-
-	public String getAddress() {
-		return address;
 	}
 
 	public int getRating() {
