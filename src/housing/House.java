@@ -10,10 +10,12 @@ public class House {
 
 	// Pre-Defined Var's
 	private final ArrayList<Human> residents = new ArrayList<>(); // List of residents (Humans) living in the house
+	private final int maxAmountOfResidents = 4;
 
 	// Var's
 	private int rating; // Rating of the house, could be from 1 to 10
 	private double price = -1; // Rent price per sim step
+	private double pricePerMonthPerPerson;
 
 	public House(int rating) {
 		this.rating = rating;
@@ -34,8 +36,8 @@ public class House {
 		double rentToPay = price / residents.size();
 		int rentPerResident = (int) Math.round(rentToPay);
 
-		for (Human human : residents) {
-			human.payRent(rentPerResident);
+		for (int i = 0; i < residents.size(); i++) {
+			residents.get(i).payRent(rentPerResident);
 		}
 	}
 
@@ -44,15 +46,25 @@ public class House {
 			throw new IllegalArgumentException("Rating is invalid: " + rating);
 		}
 		price = HousingSystem.PRICE_RANGES[rating];
+		pricePerMonthPerPerson = price / residents.size();
+	}
+
+	public boolean isFull() {
+		return residents.size() >= maxAmountOfResidents;
 	}
 
 	public void addResident(Human human) {
-		if (human.getHouse() != null) {
+		if (isFull()) { // Check if the house is full using the isFull method
 			return;
 		}
 
-		if (!residents.contains(human)) {
+		if (human.getHouse() != null) { // Check if the human is already in a house
+			return;
+		}
+
+		if (!residents.contains(human)) { // Check if the human is not already a resident
 			residents.add(human);
+			human.setHouse(this); // Don't forget to set the house for the human
 		}
 	}
 
@@ -77,6 +89,10 @@ public class House {
 
 	public double getPrice() {
 		return price;
+	}
+
+	public double getPricePerMonthPerPerson() {
+		return pricePerMonthPerPerson;
 	}
 
 	public void setPrice(double price) {

@@ -50,11 +50,13 @@ public class StatsTracker {
 
 	private static String stats;
 	private static int populationSize;
+	public static int amountOfPeopleHomeless;
 
 	public static void reset() {
 		amountOfNewChildren = 0;
 		amountOfKilledHumans = 0;
 		amountOfChildren = 0;
+		amountOfPeopleHomeless = 0;
 		aggressiveCount = 0;
 		cooperativeCount = 0;
 		neutralCount = 0;
@@ -87,9 +89,9 @@ public class StatsTracker {
 		unemployedPeople = 0;
 		retiredPeople = 0;
 		richestPerson = null;
-		
+
 	}
-	
+
 	public static void fullReset() {
 		highestWealthReached = 0;
 	}
@@ -146,6 +148,10 @@ public class StatsTracker {
 				highestWealthReached = human.getMoney();
 			}
 
+			if (human.getHouse() == null) {
+				StatsTracker.amountOfPeopleHomeless++;
+			}
+
 			totalHealth += human.getHealth();
 			totalSocialSkill += human.getSocialSkill();
 			totalPhysicalStrength += human.getPhysicalStrength();
@@ -177,6 +183,7 @@ public class StatsTracker {
 		stats += "Amount of added children: " + (amountOfNewChildren / 2) + "\n";
 		stats += "Amount of killed people: " + (amountOfKilledHumans) + "\n";
 		stats += "Amount of children: " + (amountOfChildren) + "\n";
+		stats += "Amount of homeless: " + (amountOfPeopleHomeless) + "\n";
 
 		stats += "Aggressive: " + aggressiveCount + "\n";
 		stats += "Cooperative: " + cooperativeCount + "\n";

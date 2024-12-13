@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import entities.Human;
+import housing.House;
 import housing.HousingSystem;
 import interaction.CompatibilityChecker;
 import interaction.InteractionHandler;
@@ -15,7 +16,7 @@ import names.NameLoader;
 public class Simulation extends Thread {
 
 	private List<Human> population;
-	private final int populationLimit = 10000;
+	private final int populationLimit = 50;
 	private int generation;
 
 	private boolean isRunning;
@@ -143,6 +144,20 @@ public class Simulation extends Thread {
 			}
 
 			human1.payHealthInsurance();
+
+			if (human1.getHouse() == null) { // No house
+				for (House house : HousingSystem.getHouses()) {
+					if (house.isFull()) {
+						continue;
+					}
+
+					if (house.getPricePerMonthPerPerson() > human1.getLastSalary()) {
+						continue; // House is too expensive
+					}
+
+					house.addResident(human1);
+				}
+			}
 		}
 
 		HousingSystem.update();
