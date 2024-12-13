@@ -15,7 +15,7 @@ public class Human {
 	private Job job = null;
 	private int money = 0;
 	private House house;
-	private int lastSalary;
+	private int lastSalary = 500;
 
 	private Behavior behavior = Behavior.NEUTRAL; // Aggressive, Cooperative, Neutral
 
@@ -240,11 +240,19 @@ public class Human {
 	}
 
 	public void recieveSalary() {
+		lastSalary = 0;
+
 		if (job == null) { // Unemployed, will add welfare in the future
 			return;
 		}
 
+		if (hoursWorked == 0) { // Lazy ass
+			return;
+		}
+
 		lastSalary = (int) Math.round(hoursWorked * job.getSalary());
+
+		hoursWorked = 0;
 
 		money += lastSalary;
 	}
@@ -553,7 +561,7 @@ public class Human {
 		return dead;
 	}
 
-	public double getLastSalary() {
+	public int getLastSalary() {
 		return lastSalary;
 	}
 }
