@@ -14,7 +14,7 @@ public class HousingSystem {
 			Color.RED, // Rating 0
 			Color.ORANGE, // Rating 1
 			Color.YELLOW, // Rating 2
-			Color.GREEN.brighter(), // Rating 3
+			Color.GREEN, // Rating 3
 			Color.CYAN, // Rating 4
 			Color.BLUE, // Rating 5
 			Color.MAGENTA, // Rating 6
