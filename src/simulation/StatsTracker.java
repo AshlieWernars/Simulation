@@ -46,7 +46,7 @@ public class StatsTracker {
 	static int retiredPeople;
 
 	static Human richestPerson;
-	static double highestWealthReached;
+	static int highestWealthReached;
 
 	private static String stats;
 	private static int populationSize;
