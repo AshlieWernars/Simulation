@@ -58,4 +58,8 @@ public class HousingSystem {
 			}
 		}
 	}
+
+	public static ArrayList<House> getHouses() {
+		return houses;
+	}
 }
