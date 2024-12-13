@@ -555,6 +555,6 @@ public class Human {
 	}
 
 	public double getLastSalary() {
-		return 0;
+		return lastSalary;
 	}
 }
