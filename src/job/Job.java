@@ -6,16 +6,16 @@ import entities.Human;
 
 public enum Job {
 
-	FARMER(50), //
-	HUNTER(60), //
-	BUILDER(70), //
-	TEACHER(80), //
-	HEALER(90), //
-	GUARD(65), //
-	MERCHANT(75), //
-	ARTIST(40), //
-	SCIENTIST(100), //
-	LEADER(120);//
+	FARMER(2500), //
+	HUNTER(2500), //
+	BUILDER(2800), //
+	TEACHER(2800), //
+	HEALER(4500), //
+	GUARD(2200), //
+	MERCHANT(3000), //
+	ARTIST(2500), //
+	SCIENTIST(3500), //
+	LEADER(7500);//
 
 	private final int salary;
 
