@@ -12,7 +12,6 @@ import housing.HousingSystem;
 import interaction.CompatibilityChecker;
 import interaction.InteractionHandler;
 import names.NameLoader;
-import state.IRS;
 
 public class Simulation extends Thread {
 
@@ -110,6 +109,21 @@ public class Simulation extends Thread {
 			humanInteract(human, i);
 
 			humanDoJob(human);
+
+			if (human.getAge() > 65) { // Retired
+				human.setJob(null);
+				// Retired
+				StatsTracker.retiredPeople++;
+			}
+
+			if (human.getAge() < 18) { // Too young
+				human.setJob(null);
+				StatsTracker.amountOfChildren++;
+			}
+
+			if (human.getJob() == null) { // Lazy bitch is unemployed
+				StatsTracker.unemployedPeople++;
+			}
 		}
 
 		if (this.day % 28 == 0) {
@@ -177,27 +191,7 @@ public class Simulation extends Thread {
 		}
 
 		human.assignJob();
-		int jobStatus = human.tryToDoJob();
-
-		switch (jobStatus) {
-		case 0:
-			// They did their job
-			break;
-		case 1:
-			StatsTracker.unemployedPeople++;
-			// They are unemployed
-			break;
-		case 2:
-			// Retired
-			StatsTracker.retiredPeople++;
-			break;
-		case 3:
-			// Too young
-			StatsTracker.amountOfChildren++;
-			break;
-		default:
-			throw new RuntimeException("Unkown Job Status");
-		}
+		human.tryToDoJob();
 	}
 
 	private void reproduce() {

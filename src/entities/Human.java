@@ -215,28 +215,24 @@ public class Human {
 		}
 	}
 
-	/**
-	 * 
-	 * @return 0 if job done, 1 if no job, 2 if retired, 3 if too young
-	 */
-	public int tryToDoJob() {
+	public void tryToDoJob() {
 		if (age > 65) { // Retired
 			job = null;
-			return 2;
+			return;
 		}
 
 		if (age < 18) { // Too young
 			job = null;
-			return 3;
+			return;
 		}
 
 		if (job == null) { // Lazy bitch is unemployed
-			return 1;
+			return;
 		}
 
 		hoursWorked += job.doJob();
 
-		return 0;
+		return;
 	}
 
 	public void recieveSalary() {
@@ -277,6 +273,7 @@ public class Human {
 		}
 
 		money -= healthInsuranceCost;
+		StateManager.addToStateMoney(healthInsuranceCost);
 	}
 
 	public void payRent(int rent) {
