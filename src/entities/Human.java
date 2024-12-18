@@ -263,8 +263,7 @@ public class Human {
 		int healthInsuranceCost = HealthInsurance.calculateHealthInsuranceCost(this);
 
 		if (money - healthInsuranceCost < 0) {
-			// Human can't afford the insurance
-			return;
+			StateManager.askForWelfare(this);
 		}
 
 		money -= healthInsuranceCost;
@@ -558,5 +557,10 @@ public class Human {
 
 	public boolean isDead() {
 		return dead;
+	}
+
+	public void giveMoney(int moneyToAdd) {
+		money += moneyToAdd;
+		money = Math.max(0, moneyToAdd);
 	}
 }
