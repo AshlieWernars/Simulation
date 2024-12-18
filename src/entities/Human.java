@@ -246,7 +246,7 @@ public class Human {
 		}
 
 		if (age > 65) {
-			money += 1350;
+			StateManager.askForPension(this);
 			job = null;
 			return;
 		}
