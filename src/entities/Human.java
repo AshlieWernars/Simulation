@@ -295,7 +295,7 @@ public class Human {
 			return;
 		}
 
-		// Deduct rent from money if there is enough
+		StateManager.addToStateMoney(rent);
 		money -= rent;
 	}
 
