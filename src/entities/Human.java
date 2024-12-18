@@ -574,6 +574,6 @@ public class Human {
 
 	public void giveMoney(int moneyToAdd) {
 		money += moneyToAdd;
-		money = Math.max(0, moneyToAdd);
+		money = Math.max(0, money);
 	}
 }
