@@ -21,6 +21,10 @@ public class StateManager {
 		addToStateMoney(-welfarePerMonth);
 		human.payHealthInsurance();
 	}
+	
+	public static void resetMoney() {
+		stateMoney = 100000;
+	}
 
 	public static int getStateMoney() {
 		return stateMoney;

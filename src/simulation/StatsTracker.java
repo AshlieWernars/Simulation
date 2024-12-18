@@ -95,6 +95,7 @@ public class StatsTracker {
 
 	public static void fullReset() {
 		highestWealthReached = 0;
+		StateManager.resetMoney();
 	}
 
 	public static void track(List<Human> population, int generation) {
