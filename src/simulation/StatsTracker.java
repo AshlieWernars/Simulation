@@ -3,6 +3,7 @@ package simulation;
 import java.util.List;
 
 import entities.Human;
+import state.StateManager;
 
 public class StatsTracker {
 
@@ -232,6 +233,8 @@ public class StatsTracker {
 		}
 
 		stats += "Highest Wealth: " + highestWealthReached + "\n";
+		
+		stats += "State's Money: " + StateManager.getStateMoney();
 
 		// System.out.println(stats);
 	}

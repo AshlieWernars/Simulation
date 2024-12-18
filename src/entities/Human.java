@@ -8,6 +8,7 @@ import housing.House;
 import insurance.HealthInsurance;
 import job.Job;
 import names.NameLoader;
+import state.StateManager;
 
 public class Human {
 
@@ -308,10 +309,7 @@ public class Human {
 				// Give all money to parent2
 				parent2.addMoney(money);
 			} else {
-				// Give money to the state (implement state logic as needed)
-				// state.addMoney(money);
-				// throw new RuntimeException(this.getName() + " " + this.getAge() + " " +
-				// this.getMoney());
+				StateManager.addToStateMoney(money);
 			}
 			return; // No need to proceed further if no children
 		}
