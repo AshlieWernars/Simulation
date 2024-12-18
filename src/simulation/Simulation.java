@@ -12,6 +12,7 @@ import housing.HousingSystem;
 import interaction.CompatibilityChecker;
 import interaction.InteractionHandler;
 import names.NameLoader;
+import state.IRS;
 
 public class Simulation extends Thread {
 
@@ -246,6 +247,8 @@ public class Simulation extends Thread {
 	private void runMonth() {
 		for (Human human : population) {
 			human.recieveSalary();
+			
+			IRS.taxHuman(human);
 
 			human.payHealthInsurance();
 		}
