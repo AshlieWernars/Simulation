@@ -50,6 +50,8 @@ public class Human {
 	private boolean dead = false;
 	double hoursWorked;
 
+	public static int lowestSalary = 100000000;
+
 	public Human(boolean isChild) {
 		name = NameLoader.getRandomName(random.nextInt(2));
 
@@ -239,6 +241,9 @@ public class Human {
 	}
 
 	public void recieveSalary() {
+		if (age < 18) { // Don't have expenses, so get no money
+			return;
+		}
 
 		if (age > 65) {
 			money += 1350;
@@ -246,7 +251,8 @@ public class Human {
 			return;
 		}
 
-		if (job == null) { // Unemployed, will add welfare in the future
+		if (job == null) { // Unemployed, get welfare from the state
+			StateManager.askForWelfare(this);
 			return;
 		}
 
@@ -254,16 +260,23 @@ public class Human {
 			return;
 		}
 
-		hoursWorked = 0;
+		int salaryToRecieve = (int) Math.round(hoursWorked * job.getSalary());
 
-		money += (int) Math.round(hoursWorked * job.getSalary());
+		if (salaryToRecieve < lowestSalary) {
+			lowestSalary = salaryToRecieve;
+		}
+
+		money += salaryToRecieve;
+
+		hoursWorked = 0;
 	}
 
 	public void payHealthInsurance() {
 		int healthInsuranceCost = HealthInsurance.calculateHealthInsuranceCost(this);
 
 		if (money - healthInsuranceCost < 0) {
-			StateManager.askForWelfare(this);
+			// TODO: Decrease their health
+			return;
 		}
 
 		money -= healthInsuranceCost;

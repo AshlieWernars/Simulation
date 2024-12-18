@@ -106,20 +106,7 @@ public class Simulation extends Thread {
 				population.remove(human);
 			}
 
-			if (random.nextInt(10) >= human.getExtroversion() || random.nextInt(10) >= human.getSocialSkill()) {
-				continue; // Human interact less based on low extroversion or low social skill
-			}
-
-			// Randomly select a different human for interaction
-			int randomIndex;
-			do {
-				randomIndex = random.nextInt(population.size());
-			} while (randomIndex == i); // Ensure it's not the same human
-
-			Human human2 = population.get(randomIndex);
-
-			// Humans interact
-			InteractionHandler.interact(human, human2);
+			humanInteract(human, i);
 
 			humanDoJob(human);
 		}
@@ -137,6 +124,23 @@ public class Simulation extends Thread {
 		}
 
 		StatsTracker.track(population, day);
+	}
+
+	private void humanInteract(Human human, int i) {
+		if (random.nextInt(10) >= human.getExtroversion() || random.nextInt(10) >= human.getSocialSkill()) {
+			return; // Human interact less based on low extroversion or low social skill
+		}
+
+		// Randomly select a different human for interaction
+		int randomIndex;
+		do {
+			randomIndex = random.nextInt(population.size());
+		} while (randomIndex == i); // Ensure it's not the same human
+
+		Human human2 = population.get(randomIndex);
+
+		// Humans interact
+		InteractionHandler.interact(human, human2);
 	}
 
 	private void assignHumansHouses() {
