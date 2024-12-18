@@ -8,6 +8,7 @@ import housing.House;
 import insurance.HealthInsurance;
 import job.Job;
 import names.NameLoader;
+import state.IRS;
 import state.StateManager;
 
 public class Human {
@@ -49,8 +50,6 @@ public class Human {
 	private final Random random = new Random();
 	private boolean dead = false;
 	double hoursWorked;
-
-	public static int lowestSalary = 100000000;
 
 	public Human(boolean isChild) {
 		name = NameLoader.getRandomName(random.nextInt(2));
@@ -262,9 +261,7 @@ public class Human {
 
 		int salaryToRecieve = (int) Math.round(hoursWorked * job.getSalary());
 
-		if (salaryToRecieve < lowestSalary) {
-			lowestSalary = salaryToRecieve;
-		}
+		salaryToRecieve = IRS.taxSalary(salaryToRecieve);
 
 		money += salaryToRecieve;
 

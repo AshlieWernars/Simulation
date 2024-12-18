@@ -236,7 +236,6 @@ public class StatsTracker {
 		stats += "Highest Wealth: " + highestWealthReached + "\n";
 
 		stats += "State's Money: " + StateManager.getStateMoney() + "\n";
-		stats += "Lowest Salary: " + Human.lowestSalary + "\n";
 
 		// System.out.println(stats);
 	}

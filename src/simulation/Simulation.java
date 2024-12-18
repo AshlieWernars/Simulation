@@ -247,8 +247,6 @@ public class Simulation extends Thread {
 	private void runMonth() {
 		for (Human human : population) {
 			human.recieveSalary();
-			
-			IRS.taxHuman(human);
 
 			human.payHealthInsurance();
 		}
